@@ -1,0 +1,15 @@
+{
+  "name": "lightweight-nfc-auth-server",
+  "version": "0.0.1",
+  "description": "Authentication server for NFC clients",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Christian Belair, Kyle Knobloch, Eric Newcombe",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
