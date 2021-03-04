@@ -1,12 +1,19 @@
 const numHashes = 16;
 
 module.exports = {
-    hashInteger
+    hashInteger, readHash
 }
 
-// Taken from https://stackoverflow.com/questions/4273466/reversible-hash-function
+// Stupidly simple hash function, this should probably be replaced
 function hashInteger(n) {
     // check to see if n is an integer
     if ( isNaN(n) || n % 1 !== 0 ) { return null; }
-    return ((0x0000FFFF & n)<<16) + ((0xFFFF0000 & n)>>16);
+    return (n * 369) - 1;
+}
+
+function readHash(n) {
+    console.log(n);
+    // check to see if n is an integer
+    if ( isNaN(n) || n % 1 !== 0 ) { return null; }
+    return (n + 1) / 369 ;
 }
