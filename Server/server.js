@@ -1,5 +1,5 @@
 const routeController = require('./routes/routeController');
-const SERVER_PORT = 3000;
+const SERVER_PORT = 3008;
 const http = require('http')
 
 let express = require('express');
