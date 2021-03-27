@@ -1,13 +1,8 @@
-class Tag
-{
-    constructor(id, secret)
-    {
-        this.id = id;
-        this.secret = secret;
-    }
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-    // Add Tag functions below
-    
-};
+let TagSchema = Schema({
+    secret: {type: String, required: true}
+});
 
-module.exports = Tag;
+module.exports = mongoose.model("Tag", TagSchema);

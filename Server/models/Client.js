@@ -1,13 +1,8 @@
-class Client
-{
-    constructor(id, secret)
-    {
-        this.id = id;
-        this.secret = secret;
-    }
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-    // Add Client device functions below
-    
-};
+let ClientSchema = Schema({
+    secret: {type: String, required: true}
+});
 
-module.exports = Client;
+module.exports = mongoose.model("Client", ClientSchema);
