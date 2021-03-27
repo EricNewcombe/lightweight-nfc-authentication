@@ -4,7 +4,7 @@ Final Project for COMP4203. We are implementing a nfc tag and device authenticat
 ### Authors
 Christian Belair, Kyle Knobloch, Eric Newcombe
 
-## Requierments
+## Requirements
 * Python & PIP
 * NodeJS & NPM
 * A NFC card reader & writer
