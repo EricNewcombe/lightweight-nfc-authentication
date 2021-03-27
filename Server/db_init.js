@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://pass.kyleknobloch.ca/nfc_auth', {useNewUrlParser: true});
+mongoose.connect('mongodb://localhost/nfc_auth', {useNewUrlParser: true});
 let db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error:'));
