@@ -2,18 +2,18 @@
 PRAGMA foreign_keys = ON;
 
 CREATE TABLE IF NOT EXISTS tags (
-    tid TEXT PRIMARY KEY,
+    tid INTEGER PRIMARY KEY AUTOINCREMENT,
     trand TEXT NOT NULL UNIQUE 
 );
 
 CREATE TABLE IF NOT EXISTS clients (
-    cid TEXT PRIMARY KEY,
+    cid INTEGER PRIMARY KEY AUTOINCREMENT,
     crand TEXT NOT NULL UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS scanned (
-    tid TEXT,
-    cid TEXT,
+    tid INTEGER,
+    cid INTEGER,
     FOREIGN KEY (tid) REFERENCES tags(tid),
     FOREIGN KEY (cid) REFERENCES clients(cid),
     CONSTRAINT pk_scanned PRIMARY KEY (tid, cid)

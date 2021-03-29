@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+class Client {
+    constructor(cid, secret){
+        this.cid = cid;
+        this.secret = secret;
+    }
+};
 
-let ClientSchema = Schema({
-    secret: {type: String, required: true}
-});
-
-module.exports = mongoose.model("Client", ClientSchema);
+module.exports = Client;

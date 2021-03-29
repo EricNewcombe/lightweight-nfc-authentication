@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+class Tag {
+    constructor(tid, secret){
+        this.tid = tid;
+        this.secret = secret;
+    }
+};
 
-let TagSchema = Schema({
-    secret: {type: String, required: true}
-});
-
-module.exports = mongoose.model("Tag", TagSchema);
+module.exports = Tag;
