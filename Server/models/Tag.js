@@ -1,7 +1,7 @@
 class Tag {
-    constructor(tid, secret){
+    constructor(tid, trand){
         this.tid = tid;
-        this.secret = secret;
+        this.trand = trand;
     }
 };
 

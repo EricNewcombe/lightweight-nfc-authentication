@@ -1,7 +1,7 @@
 class Client {
-    constructor(cid, secret){
+    constructor(cid, crand){
         this.cid = cid;
-        this.secret = secret;
+        this.crand = crand;
     }
 };
 

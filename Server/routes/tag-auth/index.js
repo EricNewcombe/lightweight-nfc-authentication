@@ -1,7 +1,9 @@
 const hashHelper = require('../helpers/hashHelper');
 const binaryHelper = require('../helpers/binaryHelper');
+const Tag = require('../../models/Tag');
 const express = require('express');
 const bodyParser = require('body-parser');
+const sqlite3 = require('sqlite3');
 
 let router = express.Router();
 let jsonParser = bodyParser.json({extended:false});
@@ -68,50 +70,65 @@ router.post('/', jsonParser, (req, res) => {
     console.log(`Tag int: ${tagID}`);
     console.log(`rs_i int: ${rs_i}`);
 
-    // Search Database for the hash (tReq) of tag_id, R'S_i
-    // TODO hook up to database
-    let result = true;
+    let db = new sqlite3.Database('../../nfc_auth.db', function(err){
 
-    // If no match, illegitimate and return an error
-    // TODO probably come up with a less descript message to return to the client
-    if ( !result ) { return res.status(400).json( { "errorMessage": "Match not found in database" } ); }
+        if (err) {
+            return res.status(500).json( { "errorMessage": "Could not connect to database." } );
+        }
 
-    // Extract R'_t by computing alpha XOR R'S_i
-    let r_t = binaryHelper.intXOR(tReq, rs_i); // R'_t
-    console.log(`r_t: ${r_t}`);
+        // Search Database for the hash (tReq) of tag_id, R'S_i
+        db.get('SELECT * FROM tags WHERE tid = ? AND trand = ?', [tagID, rs_i], function(err, row){
+            // If no match, illegitimate and return an error
+            if (err) {
+                // TODO probably come up with a less descript message to return to the client
+                return res.status(404).json( { "errorMessage": "Tag does not exist." } );
+            }
 
-    // Generate new random number, R'S_i+1 for the tag
-    let rs_i1 = Math.floor(Math.random() * 64);
-    console.log(`rs_i+1: ${rs_i1}`);
+            let tag = new Tag(row[0], row[1]);
 
-    // Compute Beta and T'_Res where Beta = H(R'S_i+1 || R'_t || R'S_i) and T_Res = R'S_i+1 XOR R'_t
+            // Extract R'_t by computing alpha XOR R'S_i
+            let r_t = binaryHelper.intXOR(tReq, rs_i); // R'_t
+            console.log(`r_t: ${r_t}`);
 
-    let rs_i1Binary = binaryHelper.intToBinaryString(rs_i1) // R'S_i+1
-    let r_tBinary = binaryHelper.intToBinaryString(r_t) // R'_t
-    console.log(`rs_i1 binary: ${rs_i1Binary}`);
-    console.log(`r_t binary: ${r_tBinary}`);
+            // Generate new random number, R'S_i+1 for the tag
+            let rs_i1 = Math.floor(Math.random() * 64);
+            console.log(`rs_i+1: ${rs_i1}`);
 
-    rs_i1Binary = binaryHelper.setBinaryStringLength(rs_i1Binary, 6) 
-    r_tBinary = binaryHelper.setBinaryStringLength(r_tBinary, 6) 
-    console.log(`rs_i1 binary after resize: ${rs_i1Binary}`);
-    console.log(`r_t binary after resize: ${r_tBinary}`);
+            // Compute Beta and T'_Res where Beta = H(R'S_i+1 || R'_t || R'S_i) and T_Res = R'S_i+1 XOR R'_t
 
-    let betaBinary = rs_i1Binary + r_tBinary + rs_iBinary;
-    console.log(`beta binary: ${betaBinary}`);
+            let rs_i1Binary = binaryHelper.intToBinaryString(rs_i1) // R'S_i+1
+            let r_tBinary = binaryHelper.intToBinaryString(r_t) // R'_t
+            console.log(`rs_i1 binary: ${rs_i1Binary}`);
+            console.log(`r_t binary: ${r_tBinary}`);
 
-    let betaInt = binaryHelper.binaryStringToInt(betaBinary);
-    console.log(`Beta int: ${betaInt}`)
+            rs_i1Binary = binaryHelper.setBinaryStringLength(rs_i1Binary, 6) 
+            r_tBinary = binaryHelper.setBinaryStringLength(r_tBinary, 6) 
+            console.log(`rs_i1 binary after resize: ${rs_i1Binary}`);
+            console.log(`r_t binary after resize: ${r_tBinary}`);
 
-    let beta = hashHelper.hashInteger( betaInt );
-    console.log(`Beta hash: ${beta}`);
+            let betaBinary = rs_i1Binary + r_tBinary + rs_iBinary;
+            console.log(`beta binary: ${betaBinary}`);
 
-    let tRes = binaryHelper.intXOR(rs_i1, r_t);
-    console.log(`tRes: ${tRes}`);
+            let betaInt = binaryHelper.binaryStringToInt(betaBinary);
+            console.log(`Beta int: ${betaInt}`)
 
-    // Update shared secret (ID'_tag, R'S_i+1)
-    // Respond with T_Res and Beta to device
+            let beta = hashHelper.hashInteger( betaInt );
+            console.log(`Beta hash: ${beta}`);
 
-    res.status(200).json( { beta, tRes } );
+            let tRes = binaryHelper.intXOR(rs_i1, r_t);
+            console.log(`tRes: ${tRes}`);
+
+            // Update shared secret (ID'_tag, R'S_i+1)
+            // Respond with T_Res and Beta to device
+            db.exec('UPDATE tags SET trand = ? WHERE tid = ?', [rs_i1, tag.tid], function(err){
+                if (err) {
+                    console.log('Could not update tag');
+                }
+
+                res.status(200).json( { beta, tRes } );
+            });
+        });
+    });
 })
 
 module.exports = router;
