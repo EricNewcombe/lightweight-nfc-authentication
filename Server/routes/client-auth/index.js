@@ -1,25 +1,53 @@
 const hashHelper = require('../helpers/hashHelper');
+const binaryHelper = require('../helpers/binaryHelper');
+const Tag = require('../../models/Tag');
+const express = require('express');
+const bodyParser = require('body-parser');
+const sqlite3 = require('sqlite3');
 
-let express = require('express');
 let router = express.Router();
+let jsonParser = bodyParser.json({extended:false});
 
 router.get('/', (req, res) => {
-    res.send("Client auth");
+
+    // Temporarily here to give stuff to test functionality
+    rs_i = 9;
+    rd_i = 39;
+    tagID = 27;
+    deviceID = 1;
+
+    console.log(`rs_i: ${rs_i}, rd_i: ${rd_i}, tag id: ${tagID}, device id: ${deviceID} `);
+
+    const rs_iBinary = binaryHelper.setBinaryStringLength(binaryHelper.intToBinaryString(rs_i), 6); // RS_i
+    const rd_iBinary = binaryHelper.setBinaryStringLength(binaryHelper.intToBinaryString(rd_i), 6); // RD_i
+    const tagIDBinary = binaryHelper.setBinaryStringLength( binaryHelper.intToBinaryString(tagID), 8 );
+    const deviceIDBinary = binaryHelper.setBinaryStringLength( binaryHelper.intToBinaryString(deviceID), 8 );
+
+    const unhashed_tReqBinary = binaryHelper.appendBinaryStrings(tagIDBinary,rs_iBinary);
+    const unhashed_dReqBinary = binaryHelper.appendBinaryStrings(deviceIDBinary,rd_iBinary);
+
+    const unhashed_tReqInt = binaryHelper.binaryStringToInt(unhashed_tReqBinary);
+    const unhashed_dReqInt = binaryHelper.binaryStringToInt(unhashed_dReqBinary);
+
+    const hashed_tReq = hashHelper.hashInteger(unhashed_tReqInt);
+    const hashed_dReq = hashHelper.hashInteger(unhashed_dReqInt);
+
+    res.status(200).json( { rs_iBinary,rd_iBinary,tagIDBinary,deviceIDBinary,unhashed_tReqBinary,unhashed_dReqBinary,unhashed_tReqInt,unhashed_dReqInt,hashed_tReq,hashed_dReq } );
 });
 
 /* 
 Expects a JSON object with the following format:
 {
     tReq: Int, Hashed value of Tag ID and its RS_i (Random i'th value). tagID is 8 bits long, random number is 6 bits long
-    alpha: Int
+    dReq: Int, Hashed value of Device ID and its RS_d (Random i'th value). tagID is 8 bits long, random number is 6 bits long
+    p:    Int, Used to calculate the partial tag id which is L/2 < p < L where L is the length of the tagID bits (8)
 }
 */
 
 router.post('/', jsonParser, (req, res) => {
 
-    let {tReq, dReq} = req.body;
-    console.log(`tReq: ${tReq}`);
-    console.log(`dReq: ${dReq}`);
+    let {tReq, dReq, p} = req.body;
+    console.log(`tReq: ${tReq}, dReq: ${dReq}, p: ${p}`);
 
     let tReqUnhashed = hashHelper.readHash(tReq);
     let dReqUnhashed = hashHelper.readHash(dReq);
@@ -33,31 +61,27 @@ router.post('/', jsonParser, (req, res) => {
     // Make sure the alpha binary string is 14 so that all data is preserved
     tReqBinaryString = binaryHelper.setBinaryStringLength(tReqBinaryString, 14);
     dReqBinaryString = binaryHelper.setBinaryStringLength(dReqBinaryString, 14);
-    console.log(`tReq Binary String: ${tReqBinaryString}`);
-    console.log(`dReq Binary String: ${dReqBinarytReqBinaryString}`);
+    console.log(`tReq Binary String: ${tReqBinaryString}, dReq Binary String: ${dReqBinarytReqBinaryString}`);
 
 
     let tagIdBinaryString = tReqBinaryString.substring(0,8);
     let deviceIdBinaryString = dReqBinaryString.substring(0,8);
-    console.log(`Tag Id binary: ${tagIdBinaryString}`);
-    console.log(`Device ID binary: ${deviceIdBinaryString}`);
+    console.log(`Tag Id binary: ${tagIdBinaryString}, Device ID binary: ${deviceIdBinaryString}`);
 
-    let rs_iBinary = tReqBinaryString.substring(8); // RS_i
-    let rd_iBinary = dReqBinaryString.substring(8); // RD_i
-    console.log(`rs_i binary: ${rs_iBinary}`);
-    console.log(`rd_i binary: ${rd_iBinary}`);
+    let rs_iBinaryString = tReqBinaryString.substring(8); // RS_i
+    let rd_iBinaryString = dReqBinaryString.substring(8); // RD_i
+    console.log(`rs_i binary: ${rs_iBinaryString}, rd_i binary: ${rd_iBinaryString}`);
 
     let tagID = binaryHelper.binaryStringToInt(tagIdBinaryString);
     let deviceID = binaryHelper.binaryStringToInt(deviceIdBinaryString);
-    console.log(`Tag ID int: ${tagID}`);
-    console.log(`Device ID int: ${deviceID}`);
+    console.log(`Tag ID int: ${tagID}, Device ID int: ${deviceID}`);
 
-    let rs_i = binaryHelper.binaryStringToInt(rs_iBinary);
-    let rd_i = binaryHelper.binaryStringToInt(rd_iBinary);
+    let rs_i = binaryHelper.binaryStringToInt(rs_iBinaryString);
+    let rd_i = binaryHelper.binaryStringToInt(rd_iBinaryString);
     console.log(`rs_i int: ${rs_i}`);
     console.log(`rd_i int: ${rd_i}`);
 
-    let db = new sqlite3.Database('../../nfc_auth.db', function(err){
+    // let db = new sqlite3.Database('../../nfc_auth.db', function(err){
 
         if (err) {
             return res.status(500).json( { "errorMessage": "Could not connect to database." } );
@@ -73,47 +97,43 @@ router.post('/', jsonParser, (req, res) => {
 
             // let tag = new Tag(row[0], row[1]);
 
-            // Extract R'_t by computing alpha XOR R'S_i
-            let r_t = binaryHelper.intXOR(tReq, rs_i); // R'_t
-            console.log(`r_t: ${r_t}`);
-
-            // Generate new random number, R'S_i+1 for the tag
+            // Generate new random numbers for tag and device, (R'S_i+1, R'D_i+1)
             let rs_i1 = Math.floor(Math.random() * 64);
-            console.log(`rs_i+1: ${rs_i1}`);
+            let rd_i1 = Math.floor(Math.random() * 64);
+            console.log(`rs_i+1: ${rs_i1}, rd_i+1: ${rd_i1}`);
 
-            // Compute Beta and T'_Res where Beta = H(R'S_i+1 || R'_t || R'S_i) and T_Res = R'S_i+1 XOR R'_t
+            // Generate rs_i and rs_i+1 binary string for alpha calculation
+            const rs_i1BinaryString = binaryHelper.intToBinaryString(rs_i1);
 
-            let rs_i1Binary = binaryHelper.intToBinaryString(rs_i1) // R'S_i+1
-            let r_tBinary = binaryHelper.intToBinaryString(r_t) // R'_t
-            console.log(`rs_i1 binary: ${rs_i1Binary}`);
-            console.log(`r_t binary: ${r_tBinary}`);
+            // Calculate the partial ids (pid_t, pid_d) by taking p least significant bits
+            const pid_tBinaryString = binaryHelper.getNLeastSignificantBinaryBits(tagIdBinaryString, p);
+            const pid_dBinaryString = binaryHelper.getNLeastSignificantBinaryBits(deviceIdBinaryString, p);
+            console.log(`pid_tBinaryString: ${pid_tBinaryString}, pid_dBinaryString: ${pid_dBinaryString}`);
 
-            rs_i1Binary = binaryHelper.setBinaryStringLength(rs_i1Binary, 6) 
-            r_tBinary = binaryHelper.setBinaryStringLength(r_tBinary, 6) 
-            console.log(`rs_i1 binary after resize: ${rs_i1Binary}`);
-            console.log(`r_t binary after resize: ${r_tBinary}`);
+            const pid_t = binaryHelper.binaryStringToInt(pid_tBinaryString);
+            const pid_d = binaryHelper.binaryStringToInt(pid_dBinaryString);
+            console.log(`pid_t: ${pid_t}, pid_d: ${pid_d}`);
 
-            let betaBinary = rs_i1Binary + r_tBinary + rs_iBinary;
-            console.log(`beta binary: ${betaBinary}`);
+            const tRes = binaryHelper.intXOR(pid_t, rs_i1);
+            const dRes = binaryHelper.intXOR(pid_d, rd_i1);
 
-            let betaInt = binaryHelper.binaryStringToInt(betaBinary);
-            console.log(`Beta int: ${betaInt}`)
+            // calculate alpha 
+            const alphaBinaryString = binaryHelper.appendBinaryStrings(rs_i1BinaryString, pid_tBinaryString, rs_iBinaryString)
+            const alphaInt = binaryHelper.binaryStringToInt(alphaBinaryString);
+            const alpha = hashHelper.hashInteger(alphaInt);
 
-            let beta = hashHelper.hashInteger( betaInt );
-            console.log(`Beta hash: ${beta}`);
+            res.status(200).json( { tRes, dRes, alpha } );
+           
 
-            let tRes = binaryHelper.intXOR(rs_i1, r_t);
-            console.log(`tRes: ${tRes}`);
+            // // Update shared secret (ID'_tag, R'S_i+1)
+            // // Respond with T_Res and Beta to device
+            // db.exec('UPDATE tags SET trand = ? WHERE tid = ?', [rs_i1, tag.tid], function(err){
+            //     if (err) {
+            //         console.log('Could not update tag');
+            //     }
 
-            // Update shared secret (ID'_tag, R'S_i+1)
-            // Respond with T_Res and Beta to device
-            db.exec('UPDATE tags SET trand = ? WHERE tid = ?', [rs_i1, tag.tid], function(err){
-                if (err) {
-                    console.log('Could not update tag');
-                }
-
-                res.status(200).json( { beta, tRes } );
-            });
+            //     res.status(200).json( { beta, tRes } );
+            // });
         // });
     });
 })

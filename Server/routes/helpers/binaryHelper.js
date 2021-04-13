@@ -1,5 +1,5 @@
 module.exports = {
-    intToBinaryString, intXOR, binaryStringToInt, appendBinaryStrings, setBinaryStringLength
+    intToBinaryString, intXOR, binaryStringToInt, appendBinaryStrings, setBinaryStringLength, getNLeastSignificantBinaryBits
 }
 
 // Checks to see if a binary string (b) is valid
@@ -43,8 +43,22 @@ function setBinaryStringLength(b, lengthToSet) {
 }
 
 // Appends two binary strings together
-function appendBinaryStrings( b1, b2 ) {
-    if ( !isValidBinary(b1) || !isValidBinary(b2) ) { throw new Error("Invalid binary string"); }
-    return b1 + b2;
+function appendBinaryStrings( ...binaryStrings ) {
+    let returnBinaryString = "";
+
+    for ( let i = 0; i < binaryStrings.length; i++ ) {
+        if ( !isValidBinary(binaryStrings[i]) ) { throw new Error(`Invalid binary string: ${binaryStrings[i]}`); }
+        returnBinaryString += binaryStrings[i];
+    }
+    
+    return returnBinaryString;
+}
+
+function getNLeastSignificantBinaryBits( b, n ) {
+    if ( !isValidBinary(b) ) { throw new Error("Invalid binary string") }
+    if ( n < 0 ) { throw new Error("n must be greater than 0"); }
+    if ( n > b.length ) { b = setBinaryStringLength(b, n); } 
+
+    return b.slice(b.length - n);
 }
 
