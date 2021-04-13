@@ -46,17 +46,16 @@ Expects a JSON object with the following format:
 
 router.post('/', jsonParser, (req, res) => {
 
-    let {tReq, dReq, p} = req.body;
+    const {tReq, dReq, p} = req.body;
     console.log(`tReq: ${tReq}, dReq: ${dReq}, p: ${p}`);
 
-    let tReqUnhashed = hashHelper.readHash(tReq);
-    let dReqUnhashed = hashHelper.readHash(dReq);
-    console.log(`Unhashed tReq: ${tReqUnhashed}`);
-    console.log(`Unhashed dReq: ${dReqUnhashed}`);
+    const tReqUnhashedInt = hashHelper.readHash(tReq);
+    const dReqUnhashedInt = hashHelper.readHash(dReq);
+    console.log(`Unhashed tReq: ${tReqUnhashedInt}, Unhashed dReq: ${dReqUnhashedInt}`);
 
 
-    let tReqBinaryString = binaryHelper.intToBinaryString(tReqUnhashed);
-    let dReqBinaryString = binaryHelper.intToBinaryString(dReqUnhashed);
+    const tReqBinaryString = binaryHelper.intToBinaryString(tReqUnhashedInt);
+    const dReqBinaryString = binaryHelper.intToBinaryString(dReqUnhashedInt);
     
     // Make sure the alpha binary string is 14 so that all data is preserved
     tReqBinaryString = binaryHelper.setBinaryStringLength(tReqBinaryString, 14);
@@ -64,22 +63,22 @@ router.post('/', jsonParser, (req, res) => {
     console.log(`tReq Binary String: ${tReqBinaryString}, dReq Binary String: ${dReqBinarytReqBinaryString}`);
 
 
-    let tagIdBinaryString = tReqBinaryString.substring(0,8);
-    let deviceIdBinaryString = dReqBinaryString.substring(0,8);
+    const tagIdBinaryString = tReqBinaryString.substring(0,8);
+    const deviceIdBinaryString = dReqBinaryString.substring(0,8);
     console.log(`Tag Id binary: ${tagIdBinaryString}, Device ID binary: ${deviceIdBinaryString}`);
 
-    let rs_iBinaryString = tReqBinaryString.substring(8); // RS_i
-    let rd_iBinaryString = dReqBinaryString.substring(8); // RD_i
+    const rs_iBinaryString = tReqBinaryString.substring(8); // RS_i
+    const rd_iBinaryString = dReqBinaryString.substring(8); // RD_i
     console.log(`rs_i binary: ${rs_iBinaryString}, rd_i binary: ${rd_iBinaryString}`);
 
-    let tagID = binaryHelper.binaryStringToInt(tagIdBinaryString);
-    let deviceID = binaryHelper.binaryStringToInt(deviceIdBinaryString);
-    console.log(`Tag ID int: ${tagID}, Device ID int: ${deviceID}`);
+    const tagIDInt = binaryHelper.binaryStringToInt(tagIdBinaryString);
+    const deviceIDInt = binaryHelper.binaryStringToInt(deviceIdBinaryString);
+    console.log(`Tag ID int: ${tagIDInt}, Device ID int: ${deviceIDInt}`);
 
-    let rs_i = binaryHelper.binaryStringToInt(rs_iBinaryString);
-    let rd_i = binaryHelper.binaryStringToInt(rd_iBinaryString);
-    console.log(`rs_i int: ${rs_i}`);
-    console.log(`rd_i int: ${rd_i}`);
+    const rs_iInt = binaryHelper.binaryStringToInt(rs_iBinaryString);
+    const rd_iInt = binaryHelper.binaryStringToInt(rd_iBinaryString);
+    console.log(`rs_i int: ${rs_iInt}`);
+    console.log(`rd_i int: ${rd_iInt}`);
 
     // let db = new sqlite3.Database('../../nfc_auth.db', function(err){
 
@@ -98,12 +97,12 @@ router.post('/', jsonParser, (req, res) => {
             // let tag = new Tag(row[0], row[1]);
 
             // Generate new random numbers for tag and device, (R'S_i+1, R'D_i+1)
-            let rs_i1 = Math.floor(Math.random() * 64);
-            let rd_i1 = Math.floor(Math.random() * 64);
-            console.log(`rs_i+1: ${rs_i1}, rd_i+1: ${rd_i1}`);
+            const rs_i1Int = Math.floor(Math.random() * 64);
+            const rd_i1Int = Math.floor(Math.random() * 64);
+            console.log(`rs_i+1: ${rs_i1Int}, rd_i+1: ${rd_i1Int}`);
 
             // Generate rs_i and rs_i+1 binary string for alpha calculation
-            const rs_i1BinaryString = binaryHelper.intToBinaryString(rs_i1);
+            const rs_i1BinaryString = binaryHelper.intToBinaryString(rs_i1Int);
 
             // Calculate the partial ids (pid_t, pid_d) by taking p least significant bits
             const pid_tBinaryString = binaryHelper.getNLeastSignificantBinaryBits(tagIdBinaryString, p);
@@ -114,8 +113,8 @@ router.post('/', jsonParser, (req, res) => {
             const pid_d = binaryHelper.binaryStringToInt(pid_dBinaryString);
             console.log(`pid_t: ${pid_t}, pid_d: ${pid_d}`);
 
-            const tRes = binaryHelper.intXOR(pid_t, rs_i1);
-            const dRes = binaryHelper.intXOR(pid_d, rd_i1);
+            const tRes = binaryHelper.intXOR(pid_t, rs_i1Int);
+            const dRes = binaryHelper.intXOR(pid_d, rd_i1Int);
 
             // calculate alpha 
             const alphaBinaryString = binaryHelper.appendBinaryStrings(rs_i1BinaryString, pid_tBinaryString, rs_iBinaryString)
@@ -127,7 +126,7 @@ router.post('/', jsonParser, (req, res) => {
 
             // // Update shared secret (ID'_tag, R'S_i+1)
             // // Respond with T_Res and Beta to device
-            // db.exec('UPDATE tags SET trand = ? WHERE tid = ?', [rs_i1, tag.tid], function(err){
+            // db.exec('UPDATE tags SET trand = ? WHERE tid = ?', [rs_i1Int, tag.tid], function(err){
             //     if (err) {
             //         console.log('Could not update tag');
             //     }
