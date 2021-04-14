@@ -80,6 +80,8 @@ router.post('/', jsonParser, (req, res) => {
     console.log(`rs_i int: ${rs_iInt}`);
     console.log(`rd_i int: ${rd_iInt}`);
 
+    // TODO re hook up the database in here and have the correct read write calls for client-auth
+
     // let db = new sqlite3.Database('../../nfc_auth.db', function(err){
 
         // if (err) {
@@ -113,16 +115,17 @@ router.post('/', jsonParser, (req, res) => {
             const pid_d = binaryHelper.binaryStringToInt(pid_dBinaryString);
             console.log(`pid_t: ${pid_t}, pid_d: ${pid_d}`);
 
+            // Generate the response integers
             const tRes = binaryHelper.intXOR(pid_t, rs_i1Int);
             const dRes = binaryHelper.intXOR(pid_d, rd_i1Int);
 
-            // calculate alpha 
+            // Calculate alpha 
             const alphaBinaryString = binaryHelper.appendBinaryStrings(rs_i1BinaryString, pid_tBinaryString, rs_iBinaryString)
             const alphaInt = binaryHelper.binaryStringToInt(alphaBinaryString);
             const alpha = hashHelper.hashInteger(alphaInt);
 
+            // TODO update the database here and then send the response
             res.status(200).json( { tRes, dRes, alpha } );
-           
 
             // // Update shared secret (ID'_tag, R'S_i+1)
             // // Respond with T_Res and Beta to device
@@ -131,7 +134,7 @@ router.post('/', jsonParser, (req, res) => {
             //         console.log('Could not update tag');
             //     }
 
-            //     res.status(200).json( { beta, tRes } );
+            //     res.status(200).json( { tRes, dRes, alpha } );
             // });
         // });
     // });
