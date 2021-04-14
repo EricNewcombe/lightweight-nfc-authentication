@@ -54,13 +54,13 @@ router.post('/', jsonParser, (req, res) => {
     console.log(`Unhashed tReq: ${tReqUnhashedInt}, Unhashed dReq: ${dReqUnhashedInt}`);
 
 
-    const tReqBinaryString = binaryHelper.intToBinaryString(tReqUnhashedInt);
-    const dReqBinaryString = binaryHelper.intToBinaryString(dReqUnhashedInt);
+    let tReqBinaryString = binaryHelper.intToBinaryString(tReqUnhashedInt);
+    let dReqBinaryString = binaryHelper.intToBinaryString(dReqUnhashedInt);
     
     // Make sure the alpha binary string is 14 so that all data is preserved
     tReqBinaryString = binaryHelper.setBinaryStringLength(tReqBinaryString, 14);
     dReqBinaryString = binaryHelper.setBinaryStringLength(dReqBinaryString, 14);
-    console.log(`tReq Binary String: ${tReqBinaryString}, dReq Binary String: ${dReqBinarytReqBinaryString}`);
+    console.log(`tReq Binary String: ${tReqBinaryString}, dReq Binary String: ${dReqBinaryString}`);
 
 
     const tagIdBinaryString = tReqBinaryString.substring(0,8);
@@ -82,9 +82,9 @@ router.post('/', jsonParser, (req, res) => {
 
     // let db = new sqlite3.Database('../../nfc_auth.db', function(err){
 
-        if (err) {
-            return res.status(500).json( { "errorMessage": "Could not connect to database." } );
-        }
+        // if (err) {
+        //     return res.status(500).json( { "errorMessage": "Could not connect to database." } );
+        // }
 
         // Search Database for the hash (tReq) of tag_id, R'S_i
         // db.get('SELECT * FROM tags WHERE tid = ? AND trand = ?', [tagID, rs_i], function(err, row){
@@ -134,7 +134,7 @@ router.post('/', jsonParser, (req, res) => {
             //     res.status(200).json( { beta, tRes } );
             // });
         // });
-    });
-})
+    // });
+});
 
 module.exports = router;
