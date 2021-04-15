@@ -1,11 +1,6 @@
-const hashHelper = require('../helpers/hashHelper');
-const binaryHelper = require('../helpers/binaryHelper');
 const dbHelper = require('../helpers/dbHelper');
 const Tag = require('../../models/Tag');
 const express = require('express');
-const bodyParser = require('body-parser');
-const sqlite3 = require('sqlite3').verbose();
-const path = require('path');
 
 let router = express.Router();
 
