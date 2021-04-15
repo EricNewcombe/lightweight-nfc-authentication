@@ -31,11 +31,18 @@ function all( sqlQuery, callback ) {
     });
 }
 
-function get( sqlQuery, callback ) {
+function getRow( sqlQuery, callback ) {
     db.get( sqlQuery, function(err, row) {
         if ( err ) { return callback(err, null); }
         return callback(err, row);
     })
 }
 
-module.exports = {run, all, exec, get}
+function insertReturnId( sqlQuery, callback ) {
+    db.run(sqlQuery, function(err) {
+        if ( err ) { return callback(err); }
+        return callback(false, this.lastID);
+    });
+}
+
+module.exports = {run, all, exec, getRow, insertReturnId}
