@@ -22,17 +22,18 @@ router.post('/get-test-data', jsonParser, (req, res) => {
     const rs_iBinaryString = binaryHelper.setBinaryStringLength(binaryHelper.intToBinaryString(rs_i), 6); // RS_i
     const tagIDBinaryString = binaryHelper.setBinaryStringLength( binaryHelper.intToBinaryString(tagID), 8 );
 
-    const tReqBinaryString = binaryHelper.appendBinaryStrings(tagIdBinaryString);
-    const alphaBinaryString = tagIDBinaryString + rs_iBinaryString
+    const tReqBinaryString = binaryHelper.appendBinaryStrings(tagIDBinaryString,rs_iBinaryString);
+
+    const alphaInt = binaryHelper.intXOR(rs_i,r_t);
+    const alphaBinaryString = binaryHelper.intToBinaryString(alphaInt);
 
     const tReqInt = binaryHelper.binaryStringToInt(tReqBinaryString);
-    const alphaInt = binaryHelper.binaryStringToInt(alphaBinaryString);
-
-    const tReqHash = hashHelper.hashInteger(tReqInt);
-    const alphaHash = hashHelper.hashInteger(alphaInt);
-
     
-    res.status(200).json( { r_tBinaryString, rs_iBinaryString, tagIDBinaryString, tReqBinaryString, alphaBinaryString, tReqInt, alphaInt, tReqHash, alphaHash } );
+    const tReqHash = hashHelper.hashInteger(tReqInt);
+    const alpha = binaryHelper.binaryStringToInt(alphaBinaryString);
+    
+    
+    res.status(200).json( { r_tBinaryString, rs_iBinaryString, tagIDBinaryString, tReqBinaryString, alphaBinaryString, tReqInt, tReqHash, alpha } );
 })
 
 /* 
@@ -47,20 +48,20 @@ router.post('/', jsonParser, (req, res) => {
     // TODO ensure that tReq and alpha are integers
 
     const {tReq, alpha} = req.body;
-    console.log(`tReq: ${tReq}, alpha: ${alpha}`)
+    console.log(`tReqHashed: ${tReq}, alpha: ${alpha}`);
 
     // Extract the tagId and tagRandomValue from the tReq
-    const alphaUnhashed = hashHelper.readHash(alpha);
-    console.log(`Unhashed alpha: ${alphaUnhashed}`);
+    const tReqUnhashed = hashHelper.readHash(tReq);
+    console.log(`Unhashed tReq: ${tReqUnhashed}`);
 
-    let alphaUnhashedBinaryString = binaryHelper.intToBinaryString(alphaUnhashed);
+    let tReqBinaryString = binaryHelper.intToBinaryString(tReqUnhashed);
     
     // Make sure the alpha binary string is 14 so that all data is preserved
-    alphaUnhashedBinaryString = binaryHelper.setBinaryStringLength(alphaUnhashedBinaryString, 14);
-    console.log(`Alpha Binary String: ${alphaUnhashedBinaryString}`);
+    tReqBinaryString = binaryHelper.setBinaryStringLength(tReqBinaryString, 14);
+    console.log(`Alpha Binary String: ${tReqBinaryString}`);
 
-    const tagIdBinaryString = alphaUnhashedBinaryString.substring(0,8);
-    const rs_iBinaryString = alphaUnhashedBinaryString.substring(8); // RS_i
+    const tagIdBinaryString = tReqBinaryString.substring(0,8);
+    const rs_iBinaryString = tReqBinaryString.substring(8); // RS_i
     console.log(`Tag binary String: ${tagIdBinaryString}, rs_i binary: ${rs_iBinaryString}`);
 
     const tagIDInt = binaryHelper.binaryStringToInt(tagIdBinaryString);
@@ -73,7 +74,7 @@ router.post('/', jsonParser, (req, res) => {
     dbHelper.getRow( sqlGetQuery, function(err, row){
 
         // If no match, illegitimate and return an error
-        if (err) {
+        if (err || !row) {
             // TODO probably come up with a less descript message to return to the client
             return res.status(404).json( { "errorMessage": "Tag does not exist." } );
         }
@@ -81,7 +82,7 @@ router.post('/', jsonParser, (req, res) => {
         let tag = new Tag(row[0], row[1]);
 
         // Extract R'_t by computing alpha XOR R'S_i
-        let r_tInt = binaryHelper.intXOR(tReq, rs_iInt); // R'_t
+        let r_tInt = binaryHelper.intXOR(alpha, rs_iInt); // R'_t
         console.log(`r_t: ${r_tInt}`);
 
         // Generate new random number, R'S_i+1 for the tag
