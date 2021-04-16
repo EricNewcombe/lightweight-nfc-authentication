@@ -1,40 +1,40 @@
 const hashHelper = require('../helpers/hashHelper');
 const binaryHelper = require('../helpers/binaryHelper');
+const dbHelper = require('../helpers/dbHelper');
 const Tag = require('../../models/Tag');
 const express = require('express');
 const bodyParser = require('body-parser');
-const sqlite3 = require('sqlite3');
 
 let router = express.Router();
 let jsonParser = bodyParser.json({extended:false});
 
+const logTag = "Tag-Auth";
+
 router.get('/', (req, res) => {
-
-    // Temporarily here to give stuff to test functionality
-    rs_i = 9;
-    r_t = 18;
-    tagID = 27;
-
-    const rs_i1 = Math.floor(Math.random() * 64);
-    console.log(`rs_i: ${rs_i}, r_t: ${r_t}, rs_i1: ${rs_i1}, `)
-
-    const rs_i1Binary = binaryHelper.setBinaryStringLength(binaryHelper.intToBinaryString(rs_i1), 6) // R'S_i+1
-    const r_tBinary = binaryHelper.setBinaryStringLength(binaryHelper.intToBinaryString(r_t), 6) // R'_t
-    const rs_iBinaryString = binaryHelper.setBinaryStringLength(binaryHelper.intToBinaryString(rs_i), 6); // RS_i
-    const betaBinary = rs_i1Binary + r_tBinary + rs_iBinaryString;
-    const betaNumber = binaryHelper.binaryStringToInt(betaBinary)
-    const betaHash = hashHelper.hashInteger( betaNumber );
-
-    const tagIDBinary = binaryHelper.setBinaryStringLength( binaryHelper.intToBinaryString(tagID), 8 );
-
-    const alphaBinary = tagIDBinary + rs_iBinaryString
-    const alphaNumber = binaryHelper.binaryStringToInt(alphaBinary);
-    const alphaHash = hashHelper.hashInteger( alphaNumber );
-
-    const tRes = binaryHelper.intXOR(rs_i1, r_t);
-
-    res.status(200).json( { tagID, tagIDBinary, rs_i, rs_iBinaryString,  alphaBinary, alphaNumber, alphaHash, rs_i1, rs_i1Binary, r_t, r_tBinary,   betaBinary, betaNumber, betaHash, tRes } );
+    return res.send("Tag-Auth");
 });
+
+router.post('/get-test-data', jsonParser, (req, res) => {
+
+    const {rs_i, r_t, tagID} = req.body;
+
+    const r_tBinaryString = binaryHelper.setBinaryStringLength(binaryHelper.intToBinaryString(r_t), 6) // R'_t
+    const rs_iBinaryString = binaryHelper.setBinaryStringLength(binaryHelper.intToBinaryString(rs_i), 6); // RS_i
+    const tagIDBinaryString = binaryHelper.setBinaryStringLength( binaryHelper.intToBinaryString(tagID), 8 );
+
+    const tReqBinaryString = binaryHelper.appendBinaryStrings(tagIDBinaryString,rs_iBinaryString);
+
+    const alphaInt = binaryHelper.intXOR(rs_i,r_t);
+    const alphaBinaryString = binaryHelper.intToBinaryString(alphaInt);
+
+    const tReqInt = binaryHelper.binaryStringToInt(tReqBinaryString);
+    
+    const tReqHash = hashHelper.hashInteger(tReqInt);
+    const alpha = binaryHelper.binaryStringToInt(alphaBinaryString);
+    
+    
+    res.status(200).json( { r_tBinaryString, rs_iBinaryString, tagIDBinaryString, tReqBinaryString, alphaBinaryString, tReqInt, tReqHash, alpha } );
+})
 
 /* 
 Expects a JSON object with the following format:
@@ -45,84 +45,89 @@ Expects a JSON object with the following format:
 */
 router.post('/', jsonParser, (req, res) => {
 
+    // TODO ensure that tReq and alpha are integers
+
     const {tReq, alpha} = req.body;
-    console.log(`tReq: ${tReq}, alpha: ${alpha}`)
+    console.log(`[${logTag}] tReqHashed: ${tReq}, alpha: ${alpha}`);
 
     // Extract the tagId and tagRandomValue from the tReq
-    const alphaUnhashed = hashHelper.readHash(alpha);
-    console.log(`Unhashed alpha: ${alphaUnhashed}`);
+    const tReqUnhashed = hashHelper.readHash(tReq);
+    console.log(`[${logTag}] Unhashed tReq: ${tReqUnhashed}`);
 
-    let alphaUnhashedBinaryString = binaryHelper.intToBinaryString(alphaUnhashed);
+    let tReqBinaryString = binaryHelper.intToBinaryString(tReqUnhashed);
     
     // Make sure the alpha binary string is 14 so that all data is preserved
-    alphaUnhashedBinaryString = binaryHelper.setBinaryStringLength(alphaUnhashedBinaryString, 14);
-    console.log(`Alpha Binary String: ${alphaUnhashedBinaryString}`);
+    tReqBinaryString = binaryHelper.setBinaryStringLength(tReqBinaryString, 14);
+    console.log(`[${logTag}] Alpha Binary String: ${tReqBinaryString}`);
 
-    const tagIdBinaryString = alphaUnhashedBinaryString.substring(0,8);
-    const rs_iBinaryString = alphaUnhashedBinaryString.substring(8); // RS_i
-    console.log(`Tag binary String: ${tagIdBinaryString}, rs_i binary: ${rs_iBinaryString}`);
+    const tagIdBinaryString = tReqBinaryString.substring(0,8);
+    const rs_iBinaryString = tReqBinaryString.substring(8); // RS_i
+    console.log(`[${logTag}] Tag binary String: ${tagIdBinaryString}, rs_i binary: ${rs_iBinaryString}`);
 
     const tagIDInt = binaryHelper.binaryStringToInt(tagIdBinaryString);
     const rs_iInt = binaryHelper.binaryStringToInt(rs_iBinaryString);
-    console.log(`Tag int: ${tagIDInt}, rs_i int: ${rs_iInt}`);
+    console.log(`[${logTag}] Tag int: ${tagIDInt}, rs_i int: ${rs_iInt}`);
 
-    let db = new sqlite3.Database('../../nfc_auth.db', function(err){
 
-        if (err) {
-            return res.status(500).json( { "errorMessage": "Could not connect to database." } );
+    // Search Database for the hash (tReq) of tag_id, R'S_i
+    const sqlGetQuery = `SELECT * FROM tags WHERE tid = ${tagIDInt} AND trand = ${rs_iInt}`
+    dbHelper.getRow( sqlGetQuery, function(err, row){
+
+        // If no match, illegitimate and return an error
+        if (err || !row) {
+            // TODO probably come up with a less descript message to return to the client
+            return res.status(404).json( { "errorMessage": "Tag does not exist." } );
         }
 
-        // Search Database for the hash (tReq) of tag_id, R'S_i
-        db.get('SELECT * FROM tags WHERE tid = ? AND trand = ?', [tagIDInt, rs_iInt], function(err, row){
-            // If no match, illegitimate and return an error
-            if (err) {
-                // TODO probably come up with a less descript message to return to the client
-                return res.status(404).json( { "errorMessage": "Tag does not exist." } );
-            }
+        let tag = new Tag(row[0], row[1]);
 
-            let tag = new Tag(row[0], row[1]);
+        // Extract R'_t by computing alpha XOR R'S_i
+        let r_tInt = binaryHelper.intXOR(alpha, rs_iInt); // R'_t
+        console.log(`[${logTag}] r_t: ${r_tInt}`);
 
-            // Extract R'_t by computing alpha XOR R'S_i
-            let r_tInt = binaryHelper.intXOR(tReq, rs_iInt); // R'_t
-            console.log(`r_t: ${r_tInt}`);
+        // Generate new random number, R'S_i+1 for the tag
+        let rs_i1Int = Math.floor(Math.random() * 64);
+        console.log(`[${logTag}] rs_i+1: ${rs_i1Int}`);
 
-            // Generate new random number, R'S_i+1 for the tag
-            let rs_i1Int = Math.floor(Math.random() * 64);
-            console.log(`rs_i+1: ${rs_i1Int}`);
+        // Compute Beta and T'_Res where Beta = H(R'S_i+1 || R'_t || R'S_i) and T_Res = R'S_i+1 XOR R'_t
 
-            // Compute Beta and T'_Res where Beta = H(R'S_i+1 || R'_t || R'S_i) and T_Res = R'S_i+1 XOR R'_t
+        let rs_i1BinaryString = binaryHelper.intToBinaryString(rs_i1Int) // R'S_i+1
+        let r_tBinaryString = binaryHelper.intToBinaryString(r_tInt) // R'_t
+        console.log(`[${logTag}] rs_i1 binary: ${rs_i1BinaryString}, r_t binary: ${r_tBinaryString}`);
 
-            let rs_i1BinaryString = binaryHelper.intToBinaryString(rs_i1Int) // R'S_i+1
-            let r_tBinaryString = binaryHelper.intToBinaryString(r_tInt) // R'_t
-            console.log(`rs_i1 binary: ${rs_i1BinaryString}, r_t binary: ${r_tBinaryString}`);
+        rs_i1BinaryString = binaryHelper.setBinaryStringLength(rs_i1BinaryString, 6) 
+        r_tBinaryString = binaryHelper.setBinaryStringLength(r_tBinaryString, 6) 
+        console.log(`[${logTag}] rs_i1 binary after resize: ${rs_i1BinaryString}, r_t binary after resize: ${r_tBinaryString}`);
 
-            rs_i1BinaryString = binaryHelper.setBinaryStringLength(rs_i1BinaryString, 6) 
-            r_tBinaryString = binaryHelper.setBinaryStringLength(r_tBinaryString, 6) 
-            console.log(`rs_i1 binary after resize: ${rs_i1BinaryString}, r_t binary after resize: ${r_tBinaryString}`);
+        let betaBinaryString = rs_i1BinaryString + r_tBinaryString + rs_iBinaryString;
+        console.log(`[${logTag}] beta binary: ${betaBinaryString}`);
 
-            let betaBinaryString = rs_i1BinaryString + r_tBinaryString + rs_iBinaryString;
-            console.log(`beta binary: ${betaBinaryString}`);
+        let betaInt = binaryHelper.binaryStringToInt(betaBinaryString);
+        console.log(`[${logTag}] Beta int: ${betaInt}`)
 
-            let betaInt = binaryHelper.binaryStringToInt(betaBinaryString);
-            console.log(`Beta int: ${betaInt}`)
+        let beta = hashHelper.hashInteger( betaInt );
+        console.log(`[${logTag}] Beta hash: ${beta}`);
 
-            let beta = hashHelper.hashInteger( betaInt );
-            console.log(`Beta hash: ${beta}`);
+        let tRes = binaryHelper.intXOR(rs_i1Int, r_tInt);
+        console.log(`[${logTag}] tRes: ${tRes}`);
 
-            let tRes = binaryHelper.intXOR(rs_i1Int, r_tInt);
-            console.log(`tRes: ${tRes}`);
+        res.status(200).json( { beta, tRes } );
 
-            // Update shared secret (ID'_tag, R'S_i+1)
-            // Respond with T_Res and Beta to device
-            db.exec('UPDATE tags SET trand = ? WHERE tid = ?', [rs_i1Int, tag.tid], function(err){
-                if (err) {
-                    console.log('Could not update tag');
-                }
+        // TODO enable the updating again
 
-                res.status(200).json( { beta, tRes } );
-            });
-        });
+        // // Update shared secret (ID'_tag, R'S_i+1)
+        // // Respond with T_Res and Beta to device
+        // const updateQuery = `UPDATE tags SET trand = ${rs_i1Int} WHERE tid = ${tag.tid}`
+        // db.exec(updateQuery, function(err){
+        //     if (err) {
+        //         console.log('Could not update tag');
+        //         return res.status(500).json({"Error": "Could not update tag", err})
+        //     }
+
+        //     res.status(200).json( { beta, tRes } );
+        // });
     });
+
 })
 
 module.exports = router;
