@@ -48,25 +48,25 @@ router.post('/', jsonParser, (req, res) => {
     // TODO ensure that tReq and alpha are integers
 
     const {tReq, alpha} = req.body;
-    console.log(`tReqHashed: ${tReq}, alpha: ${alpha}`);
+    console.log(`[${logTag}] tReqHashed: ${tReq}, alpha: ${alpha}`);
 
     // Extract the tagId and tagRandomValue from the tReq
     const tReqUnhashed = hashHelper.readHash(tReq);
-    console.log(`Unhashed tReq: ${tReqUnhashed}`);
+    console.log(`[${logTag}] Unhashed tReq: ${tReqUnhashed}`);
 
     let tReqBinaryString = binaryHelper.intToBinaryString(tReqUnhashed);
     
     // Make sure the alpha binary string is 14 so that all data is preserved
     tReqBinaryString = binaryHelper.setBinaryStringLength(tReqBinaryString, 14);
-    console.log(`Alpha Binary String: ${tReqBinaryString}`);
+    console.log(`[${logTag}] Alpha Binary String: ${tReqBinaryString}`);
 
     const tagIdBinaryString = tReqBinaryString.substring(0,8);
     const rs_iBinaryString = tReqBinaryString.substring(8); // RS_i
-    console.log(`Tag binary String: ${tagIdBinaryString}, rs_i binary: ${rs_iBinaryString}`);
+    console.log(`[${logTag}] Tag binary String: ${tagIdBinaryString}, rs_i binary: ${rs_iBinaryString}`);
 
     const tagIDInt = binaryHelper.binaryStringToInt(tagIdBinaryString);
     const rs_iInt = binaryHelper.binaryStringToInt(rs_iBinaryString);
-    console.log(`Tag int: ${tagIDInt}, rs_i int: ${rs_iInt}`);
+    console.log(`[${logTag}] Tag int: ${tagIDInt}, rs_i int: ${rs_iInt}`);
 
 
     // Search Database for the hash (tReq) of tag_id, R'S_i
@@ -83,33 +83,33 @@ router.post('/', jsonParser, (req, res) => {
 
         // Extract R'_t by computing alpha XOR R'S_i
         let r_tInt = binaryHelper.intXOR(alpha, rs_iInt); // R'_t
-        console.log(`r_t: ${r_tInt}`);
+        console.log(`[${logTag}] r_t: ${r_tInt}`);
 
         // Generate new random number, R'S_i+1 for the tag
         let rs_i1Int = Math.floor(Math.random() * 64);
-        console.log(`rs_i+1: ${rs_i1Int}`);
+        console.log(`[${logTag}] rs_i+1: ${rs_i1Int}`);
 
         // Compute Beta and T'_Res where Beta = H(R'S_i+1 || R'_t || R'S_i) and T_Res = R'S_i+1 XOR R'_t
 
         let rs_i1BinaryString = binaryHelper.intToBinaryString(rs_i1Int) // R'S_i+1
         let r_tBinaryString = binaryHelper.intToBinaryString(r_tInt) // R'_t
-        console.log(`rs_i1 binary: ${rs_i1BinaryString}, r_t binary: ${r_tBinaryString}`);
+        console.log(`[${logTag}] rs_i1 binary: ${rs_i1BinaryString}, r_t binary: ${r_tBinaryString}`);
 
         rs_i1BinaryString = binaryHelper.setBinaryStringLength(rs_i1BinaryString, 6) 
         r_tBinaryString = binaryHelper.setBinaryStringLength(r_tBinaryString, 6) 
-        console.log(`rs_i1 binary after resize: ${rs_i1BinaryString}, r_t binary after resize: ${r_tBinaryString}`);
+        console.log(`[${logTag}] rs_i1 binary after resize: ${rs_i1BinaryString}, r_t binary after resize: ${r_tBinaryString}`);
 
         let betaBinaryString = rs_i1BinaryString + r_tBinaryString + rs_iBinaryString;
-        console.log(`beta binary: ${betaBinaryString}`);
+        console.log(`[${logTag}] beta binary: ${betaBinaryString}`);
 
         let betaInt = binaryHelper.binaryStringToInt(betaBinaryString);
-        console.log(`Beta int: ${betaInt}`)
+        console.log(`[${logTag}] Beta int: ${betaInt}`)
 
         let beta = hashHelper.hashInteger( betaInt );
-        console.log(`Beta hash: ${beta}`);
+        console.log(`[${logTag}] Beta hash: ${beta}`);
 
         let tRes = binaryHelper.intXOR(rs_i1Int, r_tInt);
-        console.log(`tRes: ${tRes}`);
+        console.log(`[${logTag}] tRes: ${tRes}`);
 
         res.status(200).json( { beta, tRes } );
 
