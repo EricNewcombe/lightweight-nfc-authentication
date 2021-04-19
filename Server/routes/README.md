@@ -20,7 +20,7 @@ rs_iBinary = Binary String (6 bits long)
 output: `{ beta: Int, tRes: Int }`
 
 tReq: rs_i1 XOR r_t
-beta: Hash ( rs_i1Binary || r_tBinary || rs_iBinary )
+beta: Hash ( Convert to Int(rs_i1Binary || r_tBinary || rs_iBinary) )
 
 UnHash = (n + 1) / 369
 rs_i1 = New Random Tag Int
@@ -34,8 +34,8 @@ r_siBinary = Binary String of rs_i (6 bits long)
 
 input: `{ "tReq": Int, "dReq": Int, "p": Int }`
 
-tReq : Hash ( tagIDBinary || rs_iBinary )
-dReq : Hash ( deviceIDBinary || rd_iBinary )
+tReq : Hash ( convert to Int ( tagIDBinary || rs_iBinary ) )
+dReq : Hash ( convert to Int ( deviceIDBinary || rd_iBinary ) )
 p : Random Int (L/2 < p < L) where L is 8
 
 Hash function = (n * 369) - 1
@@ -50,7 +50,7 @@ output: `{ tRes: Int, dRes: Int, alpha: Int }`
 
 tRes : pid_t XOR rs_i1
 dRes : pid_d XOR rd_i1
-alpha : Hash( rs_i1Binary || pid_tBinary || rs_iBinary )
+alpha : Hash( convert to int ( rs_i1Binary || pid_tBinary || rs_iBinary ) )
 
 UnHash = (n + 1) / 369
 pid_t = The p least significant bits of tag id binary string (p left most bits) converted to an int
