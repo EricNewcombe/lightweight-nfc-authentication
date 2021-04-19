@@ -18,6 +18,18 @@ router.post('/get-test-data', jsonParser, (req, res) => {
 
     const { rs_i, rd_i, tagID, deviceID } = req.body;
 
+    // Check to make sure all variables required were sent
+    if ( rs_i === null || rs_i === undefined ) { return res.status(400).json( { "error": true, "errorMessage": "Missing rs_i in data object sent" } ); }
+    if ( rd_i === null || rd_i === undefined ) { return res.status(400).json( { "error": true, "errorMessage": "Missing rd_i in data object sent" } ); }
+    if ( tagID === null || tagID === undefined ) { return res.status(400).json( { "error": true, "errorMessage": "Missing tagID in data object sent" } ); }
+    if ( deviceID === null || deviceID === undefined ) { return res.status(400).json( { "error": true, "errorMessage": "Missing deviceID in data object sent" } ); }
+    
+    // Check to make sure all variables are correct type
+    if ( !Number.isInteger(rs_i) ) { return res.status(400).json( { "error": true, "errorMessage": "Invalid input, expected int for rs_i" } ); }
+    if ( !Number.isInteger(rd_i) ) { return res.status(400).json( { "error": true, "errorMessage": "Invalid input, expected int for rd_i" } ); }
+    if ( !Number.isInteger(tagID) ) { return res.status(400).json( { "error": true, "errorMessage": "Invalid input, expected int for tagID" } ); }
+    if ( !Number.isInteger(deviceID) ) { return res.status(400).json( { "error": true, "errorMessage": "Invalid input, expected int for deviceID" } ); }
+
     const rs_iBinary = binaryHelper.setBinaryStringLength(binaryHelper.intToBinaryString(rs_i), 6); // RS_i
     const rd_iBinary = binaryHelper.setBinaryStringLength(binaryHelper.intToBinaryString(rd_i), 6); // RD_i
     const tagIDBinary = binaryHelper.setBinaryStringLength( binaryHelper.intToBinaryString(tagID), 8 );
@@ -46,10 +58,19 @@ Expects a JSON object with the following format:
 
 router.post('/', jsonParser, (req, res) => {
 
-    // TODO ensure that tReq, dReq and p are all integers
-
     const {tReq, dReq, p} = req.body;
     console.log(`[${logTag}]: tReq: ${tReq}, dReq: ${dReq}, p: ${p}`);
+
+    // Check to make sure all variables required were sent
+    if ( tReq === null || tReq === undefined ) { return res.status(400).json( { "error": true, "errorMessage": "Missing tReq in data object sent" } ); }
+    if ( dReq === null || dReq === undefined ) { return res.status(400).json( { "error": true, "errorMessage": "Missing dReq in data object sent" } ); }
+    if ( p === null || tagID === undefined ) { return res.status(400).json( { "error": true, "errorMessage": "Missing p in data object sent" } ); }
+    
+    // Check to make sure all variables are correct type
+    if ( !Number.isInteger(tReq) ) { return res.status(400).json( { "error": true, "errorMessage": "Invalid input, expected int for tReq" } ); }
+    if ( !Number.isInteger(dReq) ) { return res.status(400).json( { "error": true, "errorMessage": "Invalid input, expected int for dReq" } ); }
+    if ( !Number.isInteger(p) ) { return res.status(400).json( { "error": true, "errorMessage": "Invalid input, expected int for p" } ); }
+
 
     const tReqUnhashedInt = hashHelper.readHash(tReq);
     const dReqUnhashedInt = hashHelper.readHash(dReq);

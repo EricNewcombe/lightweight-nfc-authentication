@@ -18,6 +18,16 @@ router.post('/get-test-data', jsonParser, (req, res) => {
 
     const {rs_i, r_t, tagID} = req.body;
 
+    // Check to make sure all variables required were sent
+    if ( rs_i === null || rs_i === undefined ) { return res.status(400).json( { "error": true, "errorMessage": "Missing rs_i in data object sent" } ); }
+    if ( r_t === null || r_t === undefined ) { return res.status(400).json( { "error": true, "errorMessage": "Missing r_t in data object sent" } ); }
+    if ( tagID === null || tagID === undefined ) { return res.status(400).json( { "error": true, "errorMessage": "Missing tagID in data object sent" } ); }
+    
+    // Check to make sure all variables are correct type
+    if ( !Number.isInteger(rs_i) ) { return res.status(400).json( { "error": true, "errorMessage": "Invalid input, expected int for rs_i" } ); }
+    if ( !Number.isInteger(r_t) ) { return res.status(400).json( { "error": true, "errorMessage": "Invalid input, expected int for r_t" } ); }
+    if ( !Number.isInteger(tagID) ) { return res.status(400).json( { "error": true, "errorMessage": "Invalid input, expected int for tagID" } ); }
+
     const r_tBinaryString = binaryHelper.setBinaryStringLength(binaryHelper.intToBinaryString(r_t), 6) // R'_t
     const rs_iBinaryString = binaryHelper.setBinaryStringLength(binaryHelper.intToBinaryString(rs_i), 6); // RS_i
     const tagIDBinaryString = binaryHelper.setBinaryStringLength( binaryHelper.intToBinaryString(tagID), 8 );
@@ -44,11 +54,17 @@ Expects a JSON object with the following format:
 }
 */
 router.post('/', jsonParser, (req, res) => {
-
-    // TODO ensure that tReq and alpha are integers
-
+    
     const {tReq, alpha} = req.body;
     console.log(`[${logTag}] tReqHashed: ${tReq}, alpha: ${alpha}`);
+
+    // Check to make sure the variables were sent in the json data object
+    if ( tReq === null || tReq === undefined ) { return res.status(400).json( { "error": true, "errorMessage": "Missing tReq in data object sent" } ); }
+    if ( alpha === null || alpha === undefined ) { return res.status(400).json( { "error": true, "errorMessage": "Missing alpha in data object sent" } ); }
+
+    // Check to make sure that the variables are of the correct type
+    if ( !Number.isInteger(tReq) ) { return res.status(400).json( { "error": true, "errorMessage": "Invalid input, expected int for tReq" } ); }
+    if ( !Number.isInteger(alpha) ) { return res.status(400).json( { "error": true, "errorMessage": "Invalid input, expected int for alpha" } ); }
 
     // Extract the tagId and tagRandomValue from the tReq
     const tReqUnhashed = hashHelper.readHash(tReq);
