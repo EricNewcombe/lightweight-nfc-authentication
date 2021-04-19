@@ -2,15 +2,15 @@
 
 ### '/auth/tag'
 
-input: ``
+input: `{ tReq: Int, alpha: Int }`
 
-output: ``
+output: `{ beta: Int, tRes: Int }`
 
 ### '/auth/client' 
 
-input: ``
+input: `{ tReq: Int, dReq: Int, p: Int }`
 
-output: ``
+output: `{ tRes: Int, dRes: Int, alpha: Int }`
 
 ### '/initialize-nfc/client'
 
