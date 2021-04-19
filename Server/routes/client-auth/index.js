@@ -144,8 +144,8 @@ router.post('/', jsonParser, (req, res) => {
         // Update shared secret (ID'_tag, R'S_i+1)
         // Respond with T_Res and Beta to device
         const tagUpdateQuery = `UPDATE tags SET trand = ${rs_i1Int} WHERE tid = ${tagIDInt}`
-        const clientUpdateQuery = `UPDATE tags SET crand = ${rs_i1Int} WHERE cid = ${deviceIDInt}`
-        db.exec(tagUpdateQuery, function(tagErr){
+        const clientUpdateQuery = `UPDATE clients SET crand = ${rs_i1Int} WHERE cid = ${deviceIDInt}`
+        dbHelper.exec(tagUpdateQuery, function(tagErr){
 
             if (tagErr) {
                 console.log('Could not update tag');
