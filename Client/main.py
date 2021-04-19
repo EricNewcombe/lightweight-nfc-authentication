@@ -1,4 +1,5 @@
-#import nfc
+import nfc
+import nfc.clf
 import requests
 
 def main():
@@ -30,7 +31,8 @@ def main():
             elif selection == 2:
                 print("Click enter to begin reading tag")
                 result = str(input(""))
-                print("Call to tag read")
+                fields = readTag()
+                print(str(fields))
                 print("Call to server")
                 print("server result")
                 print("call to write tag new tRAND")
@@ -73,7 +75,20 @@ def printMainMenu():
 def serverCall(page, body):
     return requests.request("GET", 'http://pass.kyleknobloch.ca:3008' + str(page), json=body)
 
+def readTag():
 
+    clf = nfc.ContactlessFrontend()
+    clf.open('tty:AMA0')
+    target = clf.sense(RemoteTarget('106A'), RemoteTarget('106B'), RemoteTarget('212F'))
+    #print(target)
+    tag = nfc.tag.activate(clf, target)
+    #print(tag)
+    records = tag.ndef.records
+    clf.close()
+    return records
+
+def wrtieTag():
+    print("Write to me!")
 
 
 
