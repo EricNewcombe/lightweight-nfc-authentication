@@ -6,12 +6,6 @@ client = user = device (all the same thing)
 
 input: `{ "tReq": Int, "alpha": Int }`
 
-Alpha = trand XOR randClientNumb
-
-tReq = HASH
-
-output: `{ "beta": Int, "tRes": Int }`
-
 tReq : Hash ( Convert To Int( tagIDBinary || rs_iBinary ) )
 alpha : rs_i XOR r_t
 
