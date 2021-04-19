@@ -1,0 +1,44 @@
+% Title page 
+% Design adapted from https://www.latextemplates.com/cat/title-pages
+
+% Requires the following commands to be set in order to render
+% \DocTitle, \DocSubTitle, \DocAuthors, \DocDate
+ 
+\begin{titlepage} % Suppresses headers and footers on the title page
+	\centering % Centre everything on the title page
+	\vspace*{6\baselineskip} % White space at the top of the page
+    
+    % Title bit
+	\rule{\textwidth}{1.6pt}\vspace*{-\baselineskip}\vspace*{2pt} % Thick horizontal rule
+	\rule{\textwidth}{0.4pt} % Thin horizontal rule
+	\vspace{1.5\baselineskip} % Whitespace above the title
+
+	{\DocTitle} % Actual title
+
+	\vspace{1.5\baselineskip} % Whitespace below the title
+	\rule{\textwidth}{0.4pt}\vspace*{-\baselineskip}\vspace{3.2pt} % Thin horizontal rule
+	\rule{\textwidth}{1.6pt} % Thick horizontal rule
+
+	% Subtitle
+	\vspace{2\baselineskip} % Whitespace after the title block
+	{\large \DocSubTitle} % Subtitle or further description
+	\vspace*{10\baselineskip} % Whitespace under the subtitle
+	
+	% Authors bit
+	Authors:
+
+	\vspace{0.5\baselineskip} % Whitespace before the editors
+	{\scshape\Large\DocAuthors} % Editor list
+	\vspace{1.5\baselineskip} % Whitespace below the editor list
+
+	Instructor:
+
+	\vspace{0.5\baselineskip} % Whitespace before the course instructor
+	{\scshape\Large\DocInstructor}
+	\vspace{0.5\baselineskip} % Whitespace below the course instructor
+	\textit{Carleton University} % Editor affiliation
+
+	% Bottom bit
+	\vfill
+	{\large \DocDate}
+\end{titlepage}
