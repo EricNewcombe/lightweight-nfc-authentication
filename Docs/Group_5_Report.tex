@@ -1,0 +1,52 @@
+\input{partials/template_base.tex}
+
+% For each report we need to set up these commands
+\newcommand{\DocTitle}{\Huge 
+    Group 5's Project Report\\
+    COMP4203A\\}
+
+\newcommand{\DocHTitle}{
+    Group 5's Project Report -- COMP4203A
+}
+
+\newcommand{\DocSubTitle}{
+    NFC Authentication protocols are an important part of modern\\
+    payment systems and personal identification, confirming the\\
+    security of NFC protocols will improve security for everyone.}
+
+\newcommand{\DocAuthors}{ 
+    Christian Belair -- \texttt{101078744} \\ 
+    Kyle Knobloch -- \texttt{?????????}\\
+    Eric Newcombe -- \texttt{?????????}\\}
+
+\newcommand{\DocInstructor}{
+    Prof. Ahmad Traboulsi\\
+}
+
+\newcommand{\DocHAuthors}{ 
+    C. Belair, K. Knobloch, E. Newcombe}
+
+\newcommand{\DocDate}{April 20th, 2021}
+
+\begin{document} 
+    % Render the title page here
+    \input{partials/title_base.tex}
+
+    % Render document partials
+    \input{partials/Abstract}
+    \tableofcontents
+    \pagebreak
+    \input{partials/Domain}
+    \input{partials/Related_Works}
+    \input{partials/Dev_Tech}
+    \input{partials/Implementation_Details}
+    \input{partials/Sim_Results.tex}
+    \input{partials/Conclusion.tex}
+    \input{partials/Demo_Video_Presentation}
+    \input{partials/Contributions.tex}
+
+    % Generate our references
+    \pagebreak
+    \bibliographystyle{plain}
+    \bibliography{References}
+\end{document}

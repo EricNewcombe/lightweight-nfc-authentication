@@ -1,0 +1,70 @@
+%%%
+% Re-usable documentation templete
+% This segment is pre-document stuff
+% Add packages here
+%%%
+\documentclass[11pt]{article} % A4 paper size, default 11pt font size and oneside for equal margins
+\usepackage[legalpaper, margin=1in]{geometry}
+
+\usepackage[utf8]{inputenc}
+% You will need texlive-utopia or related package for your distro
+\usepackage{utopia}
+\usepackage[T1]{fontenc}
+
+% Need for hrefs
+\usepackage[linkcolor=blue]{hyperref}
+
+% Loads colortbl as well
+\usepackage{xltabular}
+\usepackage{tabu}
+\usepackage{float}
+\usepackage{calc}
+\usepackage{booktabs}
+
+%% Needed packages
+\usepackage{amsmath}
+\usepackage{amsfonts}
+
+\usepackage{subcaption}
+
+% Common crap needed for math and graphics
+\usepackage{amssymb}
+\usepackage{makeidx}
+\usepackage[usenames,dvipsnames,table]{xcolor}
+\usepackage{graphicx}
+
+%% Use fancyheader
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\pagestyle{fancy}
+\fancyhead{}
+\fancyfoot{}
+% Left and right header defs
+\lhead{ \textit{\DocHTitle} }
+\rhead{ \textit{\DocHAuthors} }
+\renewcommand{\headrulewidth}{0.25pt}
+\renewcommand{\footrulewidth}{0.25pt}
+% Set footer options
+\cfoot{\thepage}
+
+%% SOLUTION FORMATTING: use \begin{ans} \end{ans} for answers
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{bm}
+\newenvironment{ans}%
+{\\\setlength\parindent{0pt}\selectfont\color{Blue}}%
+{\par}
+
+%% Use \question to make a question header
+\newcounter{questioncounter}
+\setcounter{questioncounter}{1}
+\newcommand{\question}{\noindent%
+      {\large \color{black}\fbox{%
+      \textbf{Question \thequestioncounter}}\par\vspace{5pt}}%
+  \stepcounter{questioncounter}}
+
+\newcommand{\answer}[1]{{\normalfont{\color{Blue}#1}}}
+
+\definecolor{deepskyblue}{rgb}{0.0, 0.75, 1.0}
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
+
+\usepackage{caption}

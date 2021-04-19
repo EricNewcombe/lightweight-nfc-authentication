@@ -1,0 +1,13 @@
+\contentsline {section}{\numberline {1}Domain}{2}{section.1}%
+\contentsline {section}{\numberline {2}Related Works}{2}{section.2}%
+\contentsline {section}{\numberline {3}Development Technology}{2}{section.3}%
+\contentsline {section}{\numberline {4}Implementation Details}{2}{section.4}%
+\contentsline {section}{\numberline {5}Simulation and Results}{2}{section.5}%
+\contentsline {section}{\numberline {6}Conclusion}{2}{section.6}%
+\contentsline {section}{\numberline {7}Demo Video and Presentation}{2}{section.7}%
+\contentsline {subsection}{\numberline {7.1}YouTube Video}{2}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Presentation}{2}{subsection.7.2}%
+\contentsline {section}{\numberline {8}Contributions}{2}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Christian Belair}{2}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Kyle Knobloch}{2}{subsection.8.2}%
+\contentsline {subsection}{\numberline {8.3}Eric Newcombe}{2}{subsection.8.3}%

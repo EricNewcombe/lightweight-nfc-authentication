@@ -1,8 +1,16 @@
 ## List of APIs
 
+client = user = device (all the same thing) 
+
 ### '/auth/tag'
 
-input: `{ tReq: Int, alpha: Int }`
+input: `{ "tReq": Int, "alpha": Int }`
+
+Alpha = trand XOR randClientNumb
+
+tReq = HASH
+
+output: `{ "beta": Int, "tRes": Int }`
 
 tReq : Hash ( Convert To Int( tagIDBinary || rs_iBinary ) )
 alpha : rs_i XOR r_t
@@ -30,7 +38,7 @@ r_siBinary = Binary String of rs_i (6 bits long)
 
 ### '/auth/client' 
 
-input: `{ tReq: Int, dReq: Int, p: Int }`
+input: `{ "tReq": Int, "dReq": Int, "p": Int }`
 
 tReq : Hash ( tagIDBinary || rs_iBinary )
 dReq : Hash ( deviceIDBinary || rd_iBinary )
