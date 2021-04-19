@@ -127,21 +127,17 @@ router.post('/', jsonParser, (req, res) => {
         let tRes = binaryHelper.intXOR(rs_i1Int, r_tInt);
         console.log(`[${logTag}] tRes: ${tRes}`);
 
-        res.status(200).json( { beta, tRes } );
+        // Update shared secret (ID'_tag, R'S_i+1)
+        // Respond with T_Res and Beta to device
+        const updateQuery = `UPDATE tags SET trand = ${rs_i1Int} WHERE tid = ${tagIDInt}`
+        dbHelper.exec(updateQuery, function(err){
+            if (err) {
+                console.log('Could not update tag');
+                return res.status(500).json({ "error": true, "errorMessage": "Error updating tag in database", err})
+            }
 
-        // TODO enable the updating again
-
-        // // Update shared secret (ID'_tag, R'S_i+1)
-        // // Respond with T_Res and Beta to device
-        // const updateQuery = `UPDATE tags SET trand = ${rs_i1Int} WHERE tid = ${tag.tid}`
-        // db.exec(updateQuery, function(err){
-        //     if (err) {
-        //         console.log('Could not update tag');
-        //         return res.status(500).json({"Error": "Could not update tag", err})
-        //     }
-
-        //     res.status(200).json( { beta, tRes } );
-        // });
+            res.status(200).json( { beta, tRes } );
+        });
     });
 
 })

@@ -110,7 +110,7 @@ router.post('/', jsonParser, (req, res) => {
         // If no match, illegitimate and return an error
         if (err || !row) {
             // TODO probably come up with a less descript message to return to the client
-            return res.status(400).json( { "errorMessage": "Client does not exist." } );
+            return res.status(400).json( { "error": true, "errorMessage": "Client does not exist." } );
         }
 
         let tag = new Tag(row[0], row[1]);
@@ -141,20 +141,31 @@ router.post('/', jsonParser, (req, res) => {
         const alphaInt = binaryHelper.binaryStringToInt(alphaBinaryString);
         const alpha = hashHelper.hashInteger(alphaInt);
 
-        // TODO update the database here and then send the response
-        res.status(200).json( { tRes, dRes, alpha } );
+        // Update shared secret (ID'_tag, R'S_i+1)
+        // Respond with T_Res and Beta to device
+        const tagUpdateQuery = `UPDATE tags SET trand = ${rs_i1Int} WHERE tid = ${tagIDInt}`
+        const clientUpdateQuery = `UPDATE tags SET crand = ${rs_i1Int} WHERE cid = ${deviceIDInt}`
+        db.exec(tagUpdateQuery, function(tagErr){
 
-        // // Update shared secret (ID'_tag, R'S_i+1)
-        // // Respond with T_Res and Beta to device
-        // const updateQuery = `UPDATE tags SET trand = ${rs_i1Int} WHERE tid = ${tag.tid}`
-        // db.exec(updateQuery, function(err){
-        //     if (err) {
-        //         console.log('Could not update tag');
-        //     }
+            if (tagErr) {
+                console.log('Could not update tag');
+                return res.status(500).json({ "error": true, "errorMessage": "Error updating tag in database", tagErr })
+            }
 
-        //     res.status(200).json( { tRes, dRes, alpha } );
-        // });
+            dbHelper.exec(clientUpdateQuery, function(clientErr) {
+
+                if (clientErr) {
+                    console.log('Could not update client');
+                    return res.status(500).json({ "error": true, "errorMessage": "Error updating client in database", clientErr })
+                }
+
+                res.status(200).json( { tRes, dRes, alpha } );
+            })
+
+        });
+
     });
+
 });
 
 module.exports = router;
