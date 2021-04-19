@@ -102,10 +102,12 @@ router.post('/', jsonParser, (req, res) => {
     console.log(`[${logTag}]: rs_i int: ${rs_iInt}, rd_i int: ${rd_iInt}`);
 
     // Search Database for the hash (tReq) of tag_id, R'S_i
-    const sqlQuery = `SELECT * FROM clients WHERE cid = ${deviceIDInt} AND crand = ${rd_iInt}`;
-    dbHelper.getRow(sqlQuery, function(err, row) {
+    const getClientQuery = `SELECT * FROM clients WHERE cid = ${deviceIDInt} AND crand = ${rd_iInt}`;
+    const getTagQuery = `SELECT * FROM tags WHERE tid = ${tagIDInt} AND trand = ${rs_iInt}`;
 
-        console.log(`[${logTag}]: err: ${err}, row ${JSON.stringify(row)}`);
+    dbHelper.getRow(getClientQuery, function(clientErr, clientRow) {
+
+        console.log(`[${logTag}]: client err: ${clientErr}, row ${JSON.stringify(clientRow)}`);
 
         // If no match, illegitimate and return an error
         if (err || !row) {
@@ -113,54 +115,58 @@ router.post('/', jsonParser, (req, res) => {
             return res.status(400).json( { "error": true, "errorMessage": "Client does not exist." } );
         }
 
-        let tag = new Tag(row[0], row[1]);
+        dbHelper.getRow(getTagQuery, function( tagErr, tagRow ) {
+            
+            console.log(`[${logTag}]: tag err: ${tagErr}, tag row ${JSON.stringify(tagRow)}`);
 
-        // Generate new random numbers for tag and device, (R'S_i+1, R'D_i+1)
-        const rs_i1Int = Math.floor(Math.random() * 64);
-        const rd_i1Int = Math.floor(Math.random() * 64);
-        console.log(`[${logTag}]: rs_i+1: ${rs_i1Int}, rd_i+1: ${rd_i1Int}`);
+            // Generate new random numbers for tag and device, (R'S_i+1, R'D_i+1)
+            const rs_i1Int = Math.floor(Math.random() * 64);
+            const rd_i1Int = Math.floor(Math.random() * 64);
+            console.log(`[${logTag}]: rs_i+1: ${rs_i1Int}, rd_i+1: ${rd_i1Int}`);
 
-        // Generate rs_i and rs_i+1 binary string for alpha calculation
-        const rs_i1BinaryString = binaryHelper.intToBinaryString(rs_i1Int);
+            // Generate rs_i and rs_i+1 binary string for alpha calculation
+            const rs_i1BinaryString = binaryHelper.intToBinaryString(rs_i1Int);
 
-        // Calculate the partial ids (pid_t, pid_d) by taking p least significant bits
-        const pid_tBinaryString = binaryHelper.getNLeastSignificantBinaryBits(tagIdBinaryString, p);
-        const pid_dBinaryString = binaryHelper.getNLeastSignificantBinaryBits(deviceIdBinaryString, p);
-        console.log(`[${logTag}]: pid_tBinaryString: ${pid_tBinaryString}, pid_dBinaryString: ${pid_dBinaryString}`);
+            // Calculate the partial ids (pid_t, pid_d) by taking p least significant bits
+            const pid_tBinaryString = binaryHelper.getNLeastSignificantBinaryBits(tagIdBinaryString, p);
+            const pid_dBinaryString = binaryHelper.getNLeastSignificantBinaryBits(deviceIdBinaryString, p);
+            console.log(`[${logTag}]: pid_tBinaryString: ${pid_tBinaryString}, pid_dBinaryString: ${pid_dBinaryString}`);
 
-        const pid_t = binaryHelper.binaryStringToInt(pid_tBinaryString);
-        const pid_d = binaryHelper.binaryStringToInt(pid_dBinaryString);
-        console.log(`[${logTag}]: pid_t: ${pid_t}, pid_d: ${pid_d}`);
+            const pid_t = binaryHelper.binaryStringToInt(pid_tBinaryString);
+            const pid_d = binaryHelper.binaryStringToInt(pid_dBinaryString);
+            console.log(`[${logTag}]: pid_t: ${pid_t}, pid_d: ${pid_d}`);
 
-        // Generate the response integers
-        const tRes = binaryHelper.intXOR(pid_t, rs_i1Int);
-        const dRes = binaryHelper.intXOR(pid_d, rd_i1Int);
+            // Generate the response integers
+            const tRes = binaryHelper.intXOR(pid_t, rs_i1Int);
+            const dRes = binaryHelper.intXOR(pid_d, rd_i1Int);
 
-        // Calculate alpha 
-        const alphaBinaryString = binaryHelper.appendBinaryStrings(rs_i1BinaryString, pid_tBinaryString, rs_iBinaryString)
-        const alphaInt = binaryHelper.binaryStringToInt(alphaBinaryString);
-        const alpha = hashHelper.hashInteger(alphaInt);
+            // Calculate alpha 
+            const alphaBinaryString = binaryHelper.appendBinaryStrings(rs_i1BinaryString, pid_tBinaryString, rs_iBinaryString)
+            const alphaInt = binaryHelper.binaryStringToInt(alphaBinaryString);
+            const alpha = hashHelper.hashInteger(alphaInt);
 
-        // Update shared secret (ID'_tag, R'S_i+1)
-        // Respond with T_Res and Beta to device
-        const tagUpdateQuery = `UPDATE tags SET trand = ${rs_i1Int} WHERE tid = ${tagIDInt}`
-        const clientUpdateQuery = `UPDATE clients SET crand = ${rs_i1Int} WHERE cid = ${deviceIDInt}`
-        dbHelper.exec(tagUpdateQuery, function(tagErr){
+            // Update shared secret (ID'_tag, R'S_i+1)
+            // Respond with T_Res and Beta to device
+            const tagUpdateQuery = `UPDATE tags SET trand = ${rs_i1Int} WHERE tid = ${tagIDInt}`
+            const clientUpdateQuery = `UPDATE clients SET crand = ${rs_i1Int} WHERE cid = ${deviceIDInt}`
+            dbHelper.exec(tagUpdateQuery, function(tagErr){
 
-            if (tagErr) {
-                console.log('Could not update tag');
-                return res.status(500).json({ "error": true, "errorMessage": "Error updating tag in database", tagErr })
-            }
-
-            dbHelper.exec(clientUpdateQuery, function(clientErr) {
-
-                if (clientErr) {
-                    console.log('Could not update client');
-                    return res.status(500).json({ "error": true, "errorMessage": "Error updating client in database", clientErr })
+                if (tagErr) {
+                    console.log('Could not update tag');
+                    return res.status(500).json({ "error": true, "errorMessage": "Error updating tag in database", tagErr })
                 }
 
-                res.status(200).json( { tRes, dRes, alpha } );
-            })
+                dbHelper.exec(clientUpdateQuery, function(clientErr) {
+
+                    if (clientErr) {
+                        console.log('Could not update client');
+                        return res.status(500).json({ "error": true, "errorMessage": "Error updating client in database", clientErr })
+                    }
+
+                    res.status(200).json( { tRes, dRes, alpha } );
+                })
+
+            });
 
         });
 
