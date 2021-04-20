@@ -49,7 +49,7 @@ def main():
                 print("Call to server")
 
                 # hash of binary_tid + binary_trand (appended)
-                tReq = custHash(int(str(binToLen(bin(int(fields["tid"])), 8)) + str(binToLen(bin(int(fields["trand"])), 6)), 2))
+                tReq = custHash(int(str(binToLen(int(fields["tid"]), 8)) + str(binToLen(int(fields["trand"]), 6)), 2))
                 # hash of binary_cid + binary_crand (appended)
                 dReq = custHash(int(str(bin(int(cid))) + str(binToLen(bin(int(crand)), 6)), 2))
                 p = randint(4,9) #[4,8]
