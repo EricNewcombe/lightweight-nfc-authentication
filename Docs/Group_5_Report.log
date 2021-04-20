@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/W32TeX) (preloaded format=pdflatex 2021.1.16)  19 APR 2021 13:36
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/W32TeX) (preloaded format=pdflatex 2021.1.16)  20 APR 2021 17:06
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -522,11 +522,11 @@ File: t1cmtt.fd 2019/12/16 v2.5j Standard LaTeX font definitions
 ) [1
 
 {c:/texlive/2020/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]) (c:/Users/chbel/Documents/_COMP_XXXX_/Winter/COMP_4203/lightweight-nfc-authentication/Docs/partials/Abstract.tex) (c:/Users/chbel/Documents/_COMP_XXXX_/Winter/COMP_4203/lightweight-nfc-authentication/Docs/Group_5_Report.toc
-LaTeX Font Info:    Trying to load font information for U+msa on input line 8.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 5.
  (c:/texlive/2020/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 8.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 5.
  (c:/texlive/2020/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ))
@@ -545,7 +545,26 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has b
 <to be read again> 
                    \relax 
 l.39     \input
-               {partials/Domain} [1] (c:/Users/chbel/Documents/_COMP_XXXX_/Winter/COMP_4203/lightweight-nfc-authentication/Docs/partials/Domain.tex) (c:/Users/chbel/Documents/_COMP_XXXX_/Winter/COMP_4203/lightweight-nfc-authentication/Docs/partials/Related_Works.tex) (c:/Users/chbel/Documents/_COMP_XXXX_/Winter/COMP_4203/lightweight-nfc-authentication/Docs/partials/Dev_Tech.tex) (c:/Users/chbel/Documents/_COMP_XXXX_/Winter/COMP_4203/lightweight-nfc-authentication/Docs/partials/Implementation_Details.tex) (c:/Users/chbel/Documents/_COMP_XXXX_/Winter/COMP_4203/lightweight-nfc-authentication/Docs/partials/Sim_Results.tex) (c:/Users/chbel/Documents/_COMP_XXXX_/Winter/COMP_4203/lightweight-nfc-authentication/Docs/partials/Conclusion.tex) (c:/Users/chbel/Documents/_COMP_XXXX_/Winter/COMP_4203/lightweight-nfc-authentication/Docs/partials/Demo_Video_Presentation.tex) (c:/Users/chbel/Documents/_COMP_XXXX_/Winter/COMP_4203/lightweight-nfc-authentication/Docs/partials/Contributions.tex)
+               {partials/Domain} [1] (c:/Users/chbel/Documents/_COMP_XXXX_/Winter/COMP_4203/lightweight-nfc-authentication/Docs/partials/Domain.tex
+Underfull \hbox (badness 10000) in paragraph at lines 3--4
+
+ []
+
+) (c:/Users/chbel/Documents/_COMP_XXXX_/Winter/COMP_4203/lightweight-nfc-authentication/Docs/partials/Related_Works.tex
+Underfull \hbox (badness 10000) in paragraph at lines 3--4
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 5--6
+
+ []
+
+) (c:/Users/chbel/Documents/_COMP_XXXX_/Winter/COMP_4203/lightweight-nfc-authentication/Docs/partials/Dev_Tech.tex
+Underfull \hbox (badness 10000) in paragraph at lines 3--4
+
+ []
+
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -553,11 +572,177 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[2] (c:/Users/chbel/Documents/_COMP_XXXX_/Winter/COMP_4203/lightweight-nfc-authentication/Docs/Group_5_Report.bbl
+[2]
+Underfull \hbox (badness 10000) in paragraph at lines 5--6
 
-LaTeX Warning: Empty `thebibliography' environment on input line 3.
+ []
 
-) 
+) (c:/Users/chbel/Documents/_COMP_XXXX_/Winter/COMP_4203/lightweight-nfc-authentication/Docs/partials/Implementation_Details.tex
+Underfull \hbox (badness 10000) in paragraph at lines 5--6
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 11--13
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 14--15
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 16--17
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 22--24
+
+ []
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[3]
+Underfull \hbox (badness 10000) in paragraph at lines 25--26
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 27--28
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 33--35
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 40--42
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 57--58
+
+ []
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[4]
+Underfull \hbox (badness 10000) in paragraph at lines 59--60
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 61--62
+
+ []
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[5]
+Underfull \hbox (badness 10000) in paragraph at lines 85--86
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 87--88
+
+ []
+
+) (c:/Users/chbel/Documents/_COMP_XXXX_/Winter/COMP_4203/lightweight-nfc-authentication/Docs/partials/Sim_Results.tex
+Underfull \hbox (badness 10000) in paragraph at lines 3--4
+
+ []
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[6]
+Overfull \hbox (6.02072pt too wide) in paragraph at lines 44--44
+ []|\T1/put/b/n/10.95 Authentication 
+ []
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[7]) (c:/Users/chbel/Documents/_COMP_XXXX_/Winter/COMP_4203/lightweight-nfc-authentication/Docs/partials/Conclusion.tex
+Underfull \hbox (badness 10000) in paragraph at lines 7--8
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 13--14
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 15--16
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 21--22
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 23--24
+
+ []
+
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[8]
+Underfull \hbox (badness 10000) in paragraph at lines 25--26
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 27--28
+
+ []
+
+) (c:/Users/chbel/Documents/_COMP_XXXX_/Winter/COMP_4203/lightweight-nfc-authentication/Docs/partials/Demo_Video_Presentation.tex) (c:/Users/chbel/Documents/_COMP_XXXX_/Winter/COMP_4203/lightweight-nfc-authentication/Docs/partials/Contributions.tex)
+
+Package fancyhdr Warning: \headheight is too small (12.0pt): 
+(fancyhdr)                Make it at least 13.59999pt, for example:
+(fancyhdr)                \setlength{\headheight}{13.59999pt}.
+(fancyhdr)                You might also make \topmargin smaller to compensate:
+(fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
+
+[9] (c:/Users/chbel/Documents/_COMP_XXXX_/Winter/COMP_4203/lightweight-nfc-authentication/Docs/Group_5_Report.bbl) 
 AED: lastpage setting LastPage
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -566,23 +751,23 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                You might also make \topmargin smaller to compensate:
 (fancyhdr)                \addtolength{\topmargin}{-1.59999pt}.
 
-[3] (c:/Users/chbel/Documents/_COMP_XXXX_/Winter/COMP_4203/lightweight-nfc-authentication/Docs/Group_5_Report.aux)
+[10] (c:/Users/chbel/Documents/_COMP_XXXX_/Winter/COMP_4203/lightweight-nfc-authentication/Docs/Group_5_Report.aux)
 Package rerunfilecheck Info: File `Group_5_Report.out' has not changed.
-(rerunfilecheck)             Checksum: 8AD6703D44E4103BAFB7796FF163CBD2;731.
+(rerunfilecheck)             Checksum: 2A551E52917E196414DF959E8FD4C8D7;2652.
  ) 
 Here is how much of TeX's memory you used:
- 10412 strings out of 479304
- 159721 string characters out of 5871219
- 480196 words of memory out of 5000000
- 27325 multiletter control sequences out of 15000+600000
- 479856 words of font info for 74 fonts, out of 8000000 for 9000
+ 10483 strings out of 479304
+ 160766 string characters out of 5871219
+ 498462 words of memory out of 5000000
+ 27355 multiletter control sequences out of 15000+600000
+ 480170 words of font info for 75 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 76i,11n,80p,413b,372s stack positions out of 5000i,500n,10000p,200000b,80000s
-{c:/texlive/2020/texmf-dist/fonts/enc/dvips/base/8r.enc}{c:/texlive/2020/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}<c:/texlive/2020/texmf-dist/fonts/type1/adobe/utopia/putb8a.pfb><c:/texlive/2020/texmf-dist/fonts/type1/adobe/utopia/putr8a.pfb><c:/texlive/2020/texmf-dist/fonts/type1/adobe/utopia/putri8a.pfb><c:/texlive/2020/texmf-dist/fonts/type1/public/cm-super/sftc1440.pfb>
-Output written on c:/Users/chbel/Documents/_COMP_XXXX_/Winter/COMP_4203/lightweight-nfc-authentication/Docs/Group_5_Report.pdf (4 pages, 73041 bytes).
+ 76i,11n,80p,1363b,396s stack positions out of 5000i,500n,10000p,200000b,80000s
+{c:/texlive/2020/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}{c:/texlive/2020/texmf-dist/fonts/enc/dvips/base/8r.enc}<c:/texlive/2020/texmf-dist/fonts/type1/adobe/utopia/putb8a.pfb><c:/texlive/2020/texmf-dist/fonts/type1/adobe/utopia/putr8a.pfb><c:/texlive/2020/texmf-dist/fonts/type1/adobe/utopia/putri8a.pfb><c:/texlive/2020/texmf-dist/fonts/type1/public/cm-super/sftc1440.pfb><c:/texlive/2020/texmf-dist/fonts/type1/public/cm-super/sftt1095.pfb>
+Output written on c:/Users/chbel/Documents/_COMP_XXXX_/Winter/COMP_4203/lightweight-nfc-authentication/Docs/Group_5_Report.pdf (11 pages, 135388 bytes).
 PDF statistics:
- 118 PDF objects out of 1000 (max. 8388607)
- 106 compressed objects within 2 object streams
- 20 named destinations out of 1000 (max. 500000)
- 105 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 292 PDF objects out of 1000 (max. 8388607)
+ 271 compressed objects within 3 object streams
+ 60 named destinations out of 1000 (max. 500000)
+ 289 words of extra memory for PDF output out of 10000 (max. 10000000)
 

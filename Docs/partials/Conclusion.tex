@@ -1,2 +1,29 @@
 \section{Conclusion}
 
+In our project proposal we set out to evaluate the ability of the proposed algorithm to achieve security, and prevent certain types of NFC based attacks. Below we will outline our findings for each of the different attack vectors we had set out to find.
+ 
+\subsection{Protocol adequately protects the user from NFC Data Exchange Format (NDEF) value being overwritten by a malicious actor}
+ 
+Our conclusion is yes the protocol does protect the user from overwritten values on the NFC tags, however “zombie” tags which are not able to be used anymore would be created by the attacker by overwriting values.\\
+
+Tags on their own being passive are not able to selectively allow themselves to be overwritten. They are either read only or writable, only powered active NFC devices would be able to make the distinction if a host is valid or not to overwrite it. Strictly looking at tags though, this algorithm does protect the user. If any data on the tag has been manipulated, the server will know it is no longer a valid tag as the values do not match the database that the server has access to. It will return an error to the client and the client will do no more computation with the information received from the tag.
+ 
+\subsection{Protocol adequately protects the user from spoofing}
+ 
+Our conclusion is yes the protocol can in fact protect the user from spoofing.\\
+
+If there is a man in the middle attack being carried out with the proposed algorithm, the only way that they would be able to access the information is if they knew the hash function. In our project we kept it as a simple math function which would probably be easy to crack, but using modern advanced encryption methods such as having a public key for each device it would allow this to become more secure.\\
+ 
+If any of the data is modified, there are able to be checks in place in both the client and server to ensure data integrity. For example the server can verify the random tag value using \verb|tReq| and \verb|alpha| as \verb|rs_i| is expressed in both, and the client can verify the new \verb|rs_i1| value sent back using the \verb|r_t| value it initially used, as well as comparing it to the value extracted from beta.
+ 
+\subsection{Protocol can ensure that a Denial of Service (DoS) attack isn’t possible.}
+ 
+Our conclusion is that some DoS attacks can be mitigated such as ones made against the server. However other attack vectors such as removing the tags themselves, overwriting values to create “zombie” tags which have to be reformatted by an admin and tag spoofing are all valid ways that a bad actor could attack the application.\\
+
+Mitigations for a DoS attack on the server can be made in a couple of ways. By putting the server behind services such as Cloudflare or limiting requests made from the same IP within the node server itself it can prevent all of the resources from being used up and making it so that legitimate users are unable to communicate with the server. However one way that this system is susceptible to a DoS attack is by tags being overwritten. With tags being open to being written to by anyone, as soon as someone overwrites the data stored on it, the clients are no longer able to use them anymore.\\
+
+Another way which a bad actor would be able to attempt a DoS attack would be by tag spoofing. They would be able to copy the data from one tag, to their own tag or NFC device pretending to be a tag. Whenever it was checked by a client, the attacker’s tag would be updated with the new value rendering the original legitimate tag useless.\\
+
+As more tags are overwritten by the bad actor, the user and server would be protected by the algorithm. This would come at the cost of the usability of whatever service is built on as the algorithm would be rendered useless.\\
+
+To sum up our conclusions, the user and server are protected by the algorithm, allowing both to check if any information was tampered with in transit. It also protects the user and server from information overwritten on tags, however leaving the tags as writable allows a vector for bad actors to execute a denial of service attack by rending the tags, and eventually the service useless.

@@ -1,3 +1,24 @@
-\begin{thebibliography}{}
+\begin{thebibliography}{1}
+
+\bibitem{9213758}
+A.~{ALBATTAH}, Y.~{ALGHOFAILI}, and S.~{ELKHEDIRI}.
+\newblock Nfc technology: Assessment effective of security towards protecting
+  nfc devices services.
+\newblock In {\em 2020 International Conference on Computing and Information
+  Technology (ICCIT-1441)}, pages 1--5, 2020.
+
+\bibitem{7153937}
+J.~{Baek} and H.~Y. {Youm}.
+\newblock Secure and lightweight authentication protocol for nfc tag based
+  services.
+\newblock In {\em 2015 10th Asia Joint Conference on Information Security},
+  pages 63--68, 2015.
+
+\bibitem{7335332}
+N.~{El Madhoun}, F.~{Guenane}, and G.~{Pujolle}.
+\newblock A cloud-based secure authentication protocol for contactless-nfc
+  payment.
+\newblock In {\em 2015 IEEE 4th International Conference on Cloud Networking
+  (CloudNet)}, pages 328--330, 2015.
 
 \end{thebibliography}
