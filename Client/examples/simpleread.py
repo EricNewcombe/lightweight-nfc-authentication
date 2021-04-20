@@ -2,6 +2,7 @@
 
 import nfc
 import nfc.clf
+from nfc.clf import RemoteTarget
 clf = nfc.ContactlessFrontend()
 clf.open('tty:AMA0')
 target = clf.sense(RemoteTarget('106A'), RemoteTarget('106B'), RemoteTarget('212F'))

@@ -1,2 +1,16 @@
 Server/node_modules
 Server/nfc_auth.db
+/.idea/encodings.xml
+/.idea/lightweight-nfc-authentication.iml
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/inspectionProfiles/profiles_settings.xml
+/.idea/vcs.xml
+# Default ignored files
+/shelf/
+/workspace.xml
+# Datasource local storage ignored files
+/../../../../../../:\Users\fredg\Developer\lightweight-nfc-authentication\.idea/dataSources/
+/dataSources.local.xml
+# Editor-based HTTP Client requests
+/httpRequests/
