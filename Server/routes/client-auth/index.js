@@ -64,7 +64,7 @@ router.post('/', jsonParser, (req, res) => {
     // Check to make sure all variables required were sent
     if ( tReq === null || tReq === undefined ) { return res.status(400).json( { "error": true, "errorMessage": "Missing tReq in data object sent" } ); }
     if ( dReq === null || dReq === undefined ) { return res.status(400).json( { "error": true, "errorMessage": "Missing dReq in data object sent" } ); }
-    if ( p === null || tagID === undefined ) { return res.status(400).json( { "error": true, "errorMessage": "Missing p in data object sent" } ); }
+    if ( p === null || p === undefined ) { return res.status(400).json( { "error": true, "errorMessage": "Missing p in data object sent" } ); }
     
     // Check to make sure all variables are correct type
     if ( !Number.isInteger(tReq) ) { return res.status(400).json( { "error": true, "errorMessage": "Invalid input, expected int for tReq" } ); }
