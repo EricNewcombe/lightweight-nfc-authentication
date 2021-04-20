@@ -59,8 +59,8 @@ def main():
                 tid = int(r["tid"])
                 trand = int(r["trand"])
 
-                print("Wrote to tag")
                 writeTag(tid, trand)
+                print("Wrote to tag")
 
                 print("New tag ID: " + str(tid))
                 print("New tag rand: " + str(trand))
