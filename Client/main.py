@@ -51,8 +51,8 @@ def main():
                 # hash of binary_tid + binary_trand (appended)
                 tReq = custHash(int(str(binToLen(int(fields["tid"]), 8)) + str(binToLen(int(fields["trand"]), 6)), 2))
                 # hash of binary_cid + binary_crand (appended)
-                dReq = custHash(int(str(bin(int(cid))) + str(binToLen(bin(int(crand)), 6)), 2))
-                p = randint(4,9) #[4,8]
+                dReq = custHash(int(str(binToLen(bin(int(cid)), 8)) + str(binToLen(int(crand), 6)), 2))
+                p = randint(4,8) #[4,8]
                 json = {"tReq": tReq, "dReq": dReq, "p":  p}
                 r = serverCall('/auth/client', json)
 
