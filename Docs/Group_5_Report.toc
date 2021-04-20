@@ -3,35 +3,35 @@
 \contentsline {section}{\numberline {3}Development Technology}{2}{section.3}%
 \contentsline {section}{\numberline {4}Implementation Details}{3}{section.4}%
 \contentsline {subsection}{\numberline {4.1}Server-side Implementation}{3}{subsection.4.1}%
-\contentsline {subsubsection}{\numberline {4.1.1}/auth/tag}{3}{subsubsection.4.1.1}%
+\contentsline {subsubsection}{\numberline {4.1.1}/auth/tag}{4}{subsubsection.4.1.1}%
 \contentsline {subsubsection}{\numberline {4.1.2}/auth/client}{4}{subsubsection.4.1.2}%
-\contentsline {subsubsection}{\numberline {4.1.3}/initialize-nfc/client}{4}{subsubsection.4.1.3}%
-\contentsline {subsubsection}{\numberline {4.1.4}/initialize-nfc/tag}{4}{subsubsection.4.1.4}%
-\contentsline {subsubsection}{\numberline {4.1.5}/view-entries}{4}{subsubsection.4.1.5}%
+\contentsline {subsubsection}{\numberline {4.1.3}/initialize-nfc/client}{5}{subsubsection.4.1.3}%
+\contentsline {subsubsection}{\numberline {4.1.4}/initialize-nfc/tag}{5}{subsubsection.4.1.4}%
+\contentsline {subsubsection}{\numberline {4.1.5}/view-entries}{5}{subsubsection.4.1.5}%
 \contentsline {subsection}{\numberline {4.2}Client-side Implementation}{5}{subsection.4.2}%
-\contentsline {subsubsection}{\numberline {4.2.1}Create New Client}{5}{subsubsection.4.2.1}%
-\contentsline {subsubsection}{\numberline {4.2.2}Add a New Tag}{5}{subsubsection.4.2.2}%
-\contentsline {subsubsection}{\numberline {4.2.3}Authenticate Tag \& Client}{5}{subsubsection.4.2.3}%
-\contentsline {subsubsection}{\numberline {4.2.4}Authenticate Tag Only}{5}{subsubsection.4.2.4}%
-\contentsline {subsubsection}{\numberline {4.2.5}View All Entries (Client \& Tag)}{5}{subsubsection.4.2.5}%
+\contentsline {subsubsection}{\numberline {4.2.1}Create New Client}{6}{subsubsection.4.2.1}%
+\contentsline {subsubsection}{\numberline {4.2.2}Add a New Tag}{6}{subsubsection.4.2.2}%
+\contentsline {subsubsection}{\numberline {4.2.3}Authenticate Tag \& Client}{6}{subsubsection.4.2.3}%
+\contentsline {subsubsection}{\numberline {4.2.4}Authenticate Tag Only}{6}{subsubsection.4.2.4}%
+\contentsline {subsubsection}{\numberline {4.2.5}View All Entries (Client \& Tag)}{6}{subsubsection.4.2.5}%
 \contentsline {subsubsection}{\numberline {4.2.6}Read Tag Data Only}{6}{subsubsection.4.2.6}%
 \contentsline {subsubsection}{\numberline {4.2.7}BAD: Corrupt Tag}{6}{subsubsection.4.2.7}%
 \contentsline {subsubsection}{\numberline {4.2.8}BAD: Corrupt Client}{6}{subsubsection.4.2.8}%
 \contentsline {subsubsection}{\numberline {4.2.9}Exit program}{6}{subsubsection.4.2.9}%
-\contentsline {subsection}{\numberline {4.3}Database Design}{6}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.3}Database Design}{7}{subsection.4.3}%
 \contentsline {section}{\numberline {5}Simulation and Results}{7}{section.5}%
-\contentsline {subsection}{\numberline {5.1}Verification Tests}{7}{subsection.5.1}%
-\contentsline {subsection}{\numberline {5.2}Corrupted Tag Tests}{7}{subsection.5.2}%
-\contentsline {subsection}{\numberline {5.3}Corrupted Client Tests}{8}{subsection.5.3}%
-\contentsline {section}{\numberline {6}Conclusion}{8}{section.6}%
-\contentsline {subsection}{\numberline {6.1}Protocol adequately protects the user from NFC Data Exchange Format (NDEF) value being overwritten by a malicious actor}{8}{subsection.6.1}%
-\contentsline {subsection}{\numberline {6.2}Protocol adequately protects the user from spoofing}{8}{subsection.6.2}%
-\contentsline {subsection}{\numberline {6.3}Protocol can ensure that a Denial of Service (DoS) attack isn’t possible.}{8}{subsection.6.3}%
-\contentsline {section}{\numberline {7}Additional Resources}{9}{section.7}%
-\contentsline {subsection}{\numberline {7.1}GitHub Page}{9}{subsection.7.1}%
-\contentsline {subsection}{\numberline {7.2}YouTube Video}{9}{subsection.7.2}%
-\contentsline {subsection}{\numberline {7.3}Presentation}{9}{subsection.7.3}%
-\contentsline {section}{\numberline {8}Contributions}{9}{section.8}%
-\contentsline {subsection}{\numberline {8.1}Christian Belair}{9}{subsection.8.1}%
-\contentsline {subsection}{\numberline {8.2}Kyle Knobloch}{9}{subsection.8.2}%
-\contentsline {subsection}{\numberline {8.3}Eric Newcombe}{9}{subsection.8.3}%
+\contentsline {subsection}{\numberline {5.1}Verification Tests}{8}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Corrupted Tag Tests}{8}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Corrupted Client Tests}{9}{subsection.5.3}%
+\contentsline {section}{\numberline {6}Conclusion}{9}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Protocol adequately protects the user from NFC Data Exchange Format (NDEF) value being overwritten by a malicious actor}{9}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Protocol adequately protects the user from spoofing}{9}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}Protocol can ensure that a Denial of Service (DoS) attack isn’t possible.}{9}{subsection.6.3}%
+\contentsline {section}{\numberline {7}Additional Resources}{10}{section.7}%
+\contentsline {subsection}{\numberline {7.1}GitHub Page}{10}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}YouTube Video}{10}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}Presentation}{10}{subsection.7.3}%
+\contentsline {section}{\numberline {8}Contributions}{10}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Christian Belair}{10}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Kyle Knobloch}{10}{subsection.8.2}%
+\contentsline {subsection}{\numberline {8.3}Eric Newcombe}{10}{subsection.8.3}%
