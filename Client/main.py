@@ -41,7 +41,7 @@ def main():
                 print("New user ID: " + str(cid))
                 print("New user rand: " + str(crand))
 
-            elif selection == 2: #Auth user and Tag
+            elif selection == 3: #Auth user and Tag
                 print("Click enter to begin reading...")
                 result = str(input(""))
                 fields = readTag() #json
@@ -59,17 +59,15 @@ def main():
 
                 #rtn: { tRes: Int, dRes: Int, alpha: Int }
                 partialTagId = int('0b' + str(binToLen(int(fields["tid"]), 8))[-p:], 2)
-                newtrand = partialTagId ^ int(r["tReq"])
+                newtrand = partialTagId ^ int(r["tRes"])
                 partialClientId = int('0b' + str(binToLen(int(cid), 8))[-p:], 2)
                 newdrand = partialClientId ^ int(r["dRes"])
 
-
+                # Update the returned random numbers
                 crand = newdrand
-
                 writeTag(fields["tid"], newtrand)
 
-
-            elif selection == 3: #add new tag
+            elif selection == 2: #add new tag
                 print("Click enter to write to tag")
                 result = str(input(""))
                 r = serverCall('/initialize-nfc/tag', None).json()
@@ -92,7 +90,12 @@ def main():
                 for i in r["clients"]:
                     print(i)
 
-            elif selection == 5:
+            elif selection == 6:
+                print("Click enter to read tag")
+                result = str(input(""))
+                print(str(readTag()))
+
+            elif selection == 6:
                 clf.close()
                 exit()
             else:
@@ -102,10 +105,11 @@ def main():
 def printMainMenu():
     print("----------------------------------")
     print("1. Create New User")
-    print("2. Authenticate Tag & User")
-    print("3. Add a new tag")
+    print("2. Add a new tag")
+    print("3. Authenticate Tag & User")
     print("4. View All Entries (Client & Tag)")
-    print("5. Exit program")
+    print("5. Read Tag Data Only")
+    print("6. Exit program")
 
 def custHash(n):
     return (n * 369) - 1
