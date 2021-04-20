@@ -27,9 +27,10 @@
 \contentsline {subsection}{\numberline {6.1}Protocol adequately protects the user from NFC Data Exchange Format (NDEF) value being overwritten by a malicious actor}{8}{subsection.6.1}%
 \contentsline {subsection}{\numberline {6.2}Protocol adequately protects the user from spoofing}{8}{subsection.6.2}%
 \contentsline {subsection}{\numberline {6.3}Protocol can ensure that a Denial of Service (DoS) attack isn’t possible.}{8}{subsection.6.3}%
-\contentsline {section}{\numberline {7}Demo Video and Presentation}{9}{section.7}%
-\contentsline {subsection}{\numberline {7.1}YouTube Video}{9}{subsection.7.1}%
-\contentsline {subsection}{\numberline {7.2}Presentation}{9}{subsection.7.2}%
+\contentsline {section}{\numberline {7}Additional Resources}{9}{section.7}%
+\contentsline {subsection}{\numberline {7.1}GitHub Page}{9}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}YouTube Video}{9}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}Presentation}{9}{subsection.7.3}%
 \contentsline {section}{\numberline {8}Contributions}{9}{section.8}%
 \contentsline {subsection}{\numberline {8.1}Christian Belair}{9}{subsection.8.1}%
 \contentsline {subsection}{\numberline {8.2}Kyle Knobloch}{9}{subsection.8.2}%

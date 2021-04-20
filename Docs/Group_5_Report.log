@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/W32TeX) (preloaded format=pdflatex 2021.1.16)  20 APR 2021 17:06
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/W32TeX) (preloaded format=pdflatex 2021.1.16)  20 APR 2021 17:11
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -734,7 +734,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 27--28
 
  []
 
-) (c:/Users/chbel/Documents/_COMP_XXXX_/Winter/COMP_4203/lightweight-nfc-authentication/Docs/partials/Demo_Video_Presentation.tex) (c:/Users/chbel/Documents/_COMP_XXXX_/Winter/COMP_4203/lightweight-nfc-authentication/Docs/partials/Contributions.tex)
+) (c:/Users/chbel/Documents/_COMP_XXXX_/Winter/COMP_4203/lightweight-nfc-authentication/Docs/partials/Additional_Resources.tex) (c:/Users/chbel/Documents/_COMP_XXXX_/Winter/COMP_4203/lightweight-nfc-authentication/Docs/partials/Contributions.tex)
 
 Package fancyhdr Warning: \headheight is too small (12.0pt): 
 (fancyhdr)                Make it at least 13.59999pt, for example:
@@ -753,21 +753,21 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 [10] (c:/Users/chbel/Documents/_COMP_XXXX_/Winter/COMP_4203/lightweight-nfc-authentication/Docs/Group_5_Report.aux)
 Package rerunfilecheck Info: File `Group_5_Report.out' has not changed.
-(rerunfilecheck)             Checksum: 2A551E52917E196414DF959E8FD4C8D7;2652.
+(rerunfilecheck)             Checksum: 2E8CD4EDD1E6CE7C8CA047F7DCC070B0;2706.
  ) 
 Here is how much of TeX's memory you used:
- 10483 strings out of 479304
- 160766 string characters out of 5871219
+ 10485 strings out of 479304
+ 160784 string characters out of 5871219
  498462 words of memory out of 5000000
- 27355 multiletter control sequences out of 15000+600000
+ 27356 multiletter control sequences out of 15000+600000
  480170 words of font info for 75 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  76i,11n,80p,1363b,396s stack positions out of 5000i,500n,10000p,200000b,80000s
 {c:/texlive/2020/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}{c:/texlive/2020/texmf-dist/fonts/enc/dvips/base/8r.enc}<c:/texlive/2020/texmf-dist/fonts/type1/adobe/utopia/putb8a.pfb><c:/texlive/2020/texmf-dist/fonts/type1/adobe/utopia/putr8a.pfb><c:/texlive/2020/texmf-dist/fonts/type1/adobe/utopia/putri8a.pfb><c:/texlive/2020/texmf-dist/fonts/type1/public/cm-super/sftc1440.pfb><c:/texlive/2020/texmf-dist/fonts/type1/public/cm-super/sftt1095.pfb>
-Output written on c:/Users/chbel/Documents/_COMP_XXXX_/Winter/COMP_4203/lightweight-nfc-authentication/Docs/Group_5_Report.pdf (11 pages, 135388 bytes).
+Output written on c:/Users/chbel/Documents/_COMP_XXXX_/Winter/COMP_4203/lightweight-nfc-authentication/Docs/Group_5_Report.pdf (11 pages, 135998 bytes).
 PDF statistics:
- 292 PDF objects out of 1000 (max. 8388607)
- 271 compressed objects within 3 object streams
- 60 named destinations out of 1000 (max. 500000)
- 289 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 299 PDF objects out of 1000 (max. 8388607)
+ 278 compressed objects within 3 object streams
+ 61 named destinations out of 1000 (max. 500000)
+ 297 words of extra memory for PDF output out of 10000 (max. 10000000)
 
