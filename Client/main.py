@@ -53,7 +53,7 @@ def main():
                 dReq = custHash(int(str(binToLen(int(cid), 8)) + str(binToLen(int(crand), 6)), 2))
                 p = randint(4,8) #[4,8]
                 json = {"tReq": tReq, "dReq": dReq, "p":  p}
-                r = serverCall('/auth/client', json).json()
+                r = serverCallPOST('/auth/client', json).json()
                 print(str(r))
 
 
@@ -123,6 +123,9 @@ def binToLen(b, length):
 
 def serverCall(page, body):
     return requests.request("GET", 'http://pass.kyleknobloch.ca:3008' + str(page), json=body)
+
+def serverCallPOST(page, body):
+    return requests.request("POST", 'http://pass.kyleknobloch.ca:3008' + str(page), json=body)
 
 
 def readTag():
