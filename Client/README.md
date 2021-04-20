@@ -8,7 +8,7 @@ To run the client: `python3 main.py`
 
 The client is command based, it accepts commands to execute. 
 
-Most comman usage will be to run 1 then 2 then 3. This will create a new user on the server, then create a new tag and write to it, the finally authenticate the user and tag together. 
+Most common usage will be to run 1 then 2 then 3. This will create a new user on the server, then create a new tag and write to it, the finally authenticate the user and tag together. 
 
 ### Commands
 1. Create New User
