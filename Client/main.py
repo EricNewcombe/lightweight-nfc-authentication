@@ -66,49 +66,57 @@ def main():
                 print("New tag rand: " + str(trand))
 
             elif selection == 3:  # Auth user and Tag
-                print("Click enter to begin reading...")
-                result = str(input(""))
-                fields = readTag()
-                # print(str(fields))  # DEBUG: Print tag results
+                r = ""
+                try:
+                    print("Click enter to begin reading...")
+                    result = str(input(""))
+                    fields = readTag()
+                    # print(str(fields))  # DEBUG: Print tag results
 
-                # hash of binary_tid + binary_trand (appended)
-                tReq = custHash(int(str(binToLen(int(fields["tid"]), 8)) + str(binToLen(int(fields["trand"]), 6)), 2))
-                # hash of binary_cid + binary_crand (appended)
-                dReq = custHash(int(str(binToLen(int(cid), 8)) + str(binToLen(int(crand), 6)), 2))
-                p = randint(4,8) #[4,8]
-                json = {"tReq": tReq, "dReq": dReq, "p":  p}
-                r = serverCallPOST('/auth/client', json).json()  # call to the server
+                    # hash of binary_tid + binary_trand (appended)
+                    tReq = custHash(int(str(binToLen(int(fields["tid"]), 8)) + str(binToLen(int(fields["trand"]), 6)), 2))
+                    # hash of binary_cid + binary_crand (appended)
+                    dReq = custHash(int(str(binToLen(int(cid), 8)) + str(binToLen(int(crand), 6)), 2))
+                    p = randint(4,8) #[4,8]
+                    json = {"tReq": tReq, "dReq": dReq, "p":  p}
+                    r = serverCallPOST('/auth/client', json).json()  # call to the server
 
-                print(str(r))  # rtn: { tRes: Int, dRes: Int, alpha: Int }
+                    print(str(r))  # rtn: { tRes: Int, dRes: Int, alpha: Int }
 
-                partialTagId = int('0b' + str(binToLen(int(fields["tid"]), 8))[-p:], 2)
-                newtrand = partialTagId ^ int(r["tRes"])
-                partialClientId = int('0b' + str(binToLen(int(cid), 8))[-p:], 2)
-                newdrand = partialClientId ^ int(r["dRes"])
+                    partialTagId = int('0b' + str(binToLen(int(fields["tid"]), 8))[-p:], 2)
+                    newtrand = partialTagId ^ int(r["tRes"])
+                    partialClientId = int('0b' + str(binToLen(int(cid), 8))[-p:], 2)
+                    newdrand = partialClientId ^ int(r["dRes"])
 
-                # Update the returned random numbers
-                crand = newdrand
-                writeTag(fields["tid"], newtrand)
+                    # Update the returned random numbers
+                    crand = newdrand
+                    writeTag(fields["tid"], newtrand)
+                except KeyError:
+                    print(str(r))
 
             elif selection == 4:  # Auth tag only
-                print("Click enter to read tag")
-                result = str(input(""))
-                fields = readTag()
-                #  print(str(fields))  # DEBUG: Print tag results
+                r = ""
+                try:
+                    print("Click enter to read tag")
+                    result = str(input(""))
+                    fields = readTag()
+                    #  print(str(fields))  # DEBUG: Print tag results
 
-                # hash of binary_tid + binary_trand (appended)
-                tReq = custHash(int(str(binToLen(int(fields["tid"]), 8)) + str(binToLen(int(fields["trand"]), 6)), 2))
+                    # hash of binary_tid + binary_trand (appended)
+                    tReq = custHash(int(str(binToLen(int(fields["tid"]), 8)) + str(binToLen(int(fields["trand"]), 6)), 2))
 
-                r_t = randint(0, 63) # [0, 63]
-                # trand XOR r_t (random number)
-                alpha = int(fields["trand"]) ^ r_t
+                    r_t = randint(0, 63) # [0, 63]
+                    # trand XOR r_t (random number)
+                    alpha = int(fields["trand"]) ^ r_t
 
-                json = {"tReq": tReq, "alpha": alpha}
-                r = serverCallPOST('/auth/tag', json).json()
-                print(str(r))  # rtn { beta: Int, tRes: Int }
+                    json = {"tReq": tReq, "alpha": alpha}
+                    r = serverCallPOST('/auth/tag', json).json()
+                    print(str(r))  # rtn { beta: Int, tRes: Int }
 
-                newtrand = int(r["tRes"]) ^ r_t
-                writeTag(fields["tid"], newtrand) #update the tag
+                    newtrand = int(r["tRes"]) ^ r_t
+                    writeTag(fields["tid"], newtrand) #update the tag
+                except KeyError:
+                    print(str(r))
 
             elif selection == 5:  # display all DB entries
                 r = serverCall('/view-entries', None).json()
