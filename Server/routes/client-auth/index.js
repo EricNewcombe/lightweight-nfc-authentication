@@ -110,12 +110,17 @@ router.post('/', jsonParser, (req, res) => {
         console.log(`[${logTag}]: client err: ${clientErr}, row ${JSON.stringify(clientRow)}`);
 
         // If no match, illegitimate and return an error
-        if (err || !row) {
+        if (clientErr || !clientRow) {
             // TODO probably come up with a less descript message to return to the client
             return res.status(400).json( { "error": true, "errorMessage": "Client does not exist." } );
         }
 
         dbHelper.getRow(getTagQuery, function( tagErr, tagRow ) {
+
+            if (tagErr || !tagRow) {
+                // TODO probably come up with a less descript message to return to the client
+                return res.status(400).json( { "error": true, "errorMessage": "Client does not exist." } );
+            }
             
             console.log(`[${logTag}]: tag err: ${tagErr}, tag row ${JSON.stringify(tagRow)}`);
 
