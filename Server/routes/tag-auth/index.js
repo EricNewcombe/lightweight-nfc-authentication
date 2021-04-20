@@ -86,7 +86,7 @@ router.post('/', jsonParser, (req, res) => {
 
 
     // Search Database for the hash (tReq) of tag_id, R'S_i
-    const sqlGetQuery = `SELECT * FROM tags WHERE tid = ${tagIDInt} AND trand = ${rs_iInt}`
+    const sqlGetQuery = `SELECT * FROM tags WHERE tid = ${tagIDInt}`
     dbHelper.getRow( sqlGetQuery, function(err, row){
 
         // If no match, illegitimate and return an error
@@ -94,6 +94,7 @@ router.post('/', jsonParser, (req, res) => {
             // TODO probably come up with a less descript message to return to the client
             return res.status(404).json( { "errorMessage": "Tag does not exist." } );
         }
+        if ( rs_iInt !== row[1] ) { return res.status(404).json( {"errorMessage": "Incorrect trand" } ) }
 
         let tag = new Tag(row[0], row[1]);
 
