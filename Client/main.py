@@ -26,7 +26,7 @@ def main():
 
     while True:
         if cid != None:
-            print("\nCurrent client id: " + str(cid))
+            print("\nCurrent client id: " + str(cid) + " Client Random: " + str(crand))
         printMainMenu()
         selection = int(input("Enter a number: "))
 
@@ -81,6 +81,27 @@ def main():
                 print("New tag rand: " + str(trand))
 
             elif selection == 4:
+                print("Click enter to read tag")
+                result = str(input(""))
+                fields = readTag() #json
+                #print(str(fields)) # Print tag results
+
+                # hash of binary_tid + binary_trand (appended)
+                tReq = custHash(int(str(binToLen(int(fields["tid"]), 8)) + str(binToLen(int(fields["trand"]), 6)), 2))
+
+                r_t = randint(0, 63) # [0, 63]
+                # trand XOR r_t (random number)
+                alpha = int(fields["trand"]) ^ r_t
+
+                json = {"tReq": tReq, "alpha": alpha}
+                r = serverCallPOST('/auth/tag', json).json()
+                print(str(r)) # rtn { beta: Int, tRes: Int }
+
+                newtrand = int(r["tRes"]) ^ r_t
+
+                writeTag(fields[tid], newtrand) #update the tag
+
+            elif selection == 5:
                 r = serverCall('/view-entries', None).json()
                 print("Tags\n----------------------------------")
                 for i in r["tags"]:
@@ -95,7 +116,7 @@ def main():
                 result = str(input(""))
                 print(str(readTag()))
 
-            elif selection == 6:
+            elif selection == 7:
                 clf.close()
                 exit()
             else:
@@ -107,9 +128,10 @@ def printMainMenu():
     print("1. Create New User")
     print("2. Add a new tag")
     print("3. Authenticate Tag & User")
-    print("4. View All Entries (Client & Tag)")
-    print("5. Read Tag Data Only")
-    print("6. Exit program")
+    print("4. Authenticate Tag Only")
+    print("5. View All Entries (Client & Tag)")
+    print("6. Read Tag Data Only")
+    print("7. Exit program")
 
 def custHash(n):
     return (n * 369) - 1
