@@ -11,7 +11,7 @@ print(target)
 tag = nfc.tag.activate(clf, target)
 
 record = []
-record.append(ndef.TextRecord("{\"tid\": 10, \"trand\":50}", "en"))
+record.append(ndef.TextRecord(repr({"tid": 10, "trand": 50}), "en"))
 
 
 tag.ndef.records = record
