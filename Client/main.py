@@ -42,25 +42,25 @@ def main():
                 print("New user rand: " + str(crand))
 
             elif selection == 2: #Auth user and Tag
-                print("Click enter to begin reading ag")
+                print("Click enter to begin reading...")
                 result = str(input(""))
                 fields = readTag() #json
-                print(str(fields))
-                print("Call to server")
+                #print(str(fields)) # Print tag results
 
                 # hash of binary_tid + binary_trand (appended)
                 tReq = custHash(int(str(binToLen(int(fields["tid"]), 8)) + str(binToLen(int(fields["trand"]), 6)), 2))
                 # hash of binary_cid + binary_crand (appended)
-                dReq = custHash(int(str(binToLen(bin(int(cid)), 8)) + str(binToLen(int(crand), 6)), 2))
+                dReq = custHash(int(str(binToLen(int(cid), 8)) + str(binToLen(int(crand), 6)), 2))
                 p = randint(4,8) #[4,8]
                 json = {"tReq": tReq, "dReq": dReq, "p":  p}
-                r = serverCall('/auth/client', json)
+                r = serverCall('/auth/client', json).json()
+                print(str(r))
 
 
                 #rtn: { tRes: Int, dRes: Int, alpha: Int }
-                partialTagId = int('0b' + str(binToLen(bin(int(fields["tid"])), 8))[-p:], 2)
+                partialTagId = int('0b' + str(binToLen(int(fields["tid"]), 8))[-p:], 2)
                 newtrand = partialTagId ^ int(r["tReq"])
-                partialClientId = int('0b' + str(binToLen(bin(int(cid)), 8))[-p:], 2)
+                partialClientId = int('0b' + str(binToLen(int(cid), 8))[-p:], 2)
                 newdrand = partialClientId ^ int(r["dRes"])
 
 
