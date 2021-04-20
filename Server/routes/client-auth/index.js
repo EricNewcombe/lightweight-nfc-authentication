@@ -102,8 +102,8 @@ router.post('/', jsonParser, (req, res) => {
     console.log(`[${logTag}]: rs_i int: ${rs_iInt}, rd_i int: ${rd_iInt}`);
 
     // Search Database for the hash (tReq) of tag_id, R'S_i
-    const getClientQuery = `SELECT * FROM clients WHERE cid = ${deviceIDInt}`;
-    const getTagQuery = `SELECT * FROM tags WHERE tid = ${tagIDInt}`;
+    const getClientQuery = `SELECT * FROM clients WHERE cid = ${deviceIDInt} AND crand = ${rd_iInt}`;
+    const getTagQuery = `SELECT * FROM tags WHERE tid = ${tagIDInt} AND trand = ${rs_iInt}`;
 
     dbHelper.getRow(getClientQuery, function(clientErr, clientRow) {
 
@@ -114,8 +114,6 @@ router.post('/', jsonParser, (req, res) => {
             // TODO probably come up with a less descript message to return to the client
             return res.status(400).json( { "error": true, "errorMessage": "Client does not exist." } );
         }
-        if ( rd_iInt !== clientRow[1] ) { return res.status(404).json( {"errorMessage": "Incorrect crand" } ) }
-
 
         dbHelper.getRow(getTagQuery, function( tagErr, tagRow ) {
 
@@ -123,8 +121,6 @@ router.post('/', jsonParser, (req, res) => {
                 // TODO probably come up with a less descript message to return to the client
                 return res.status(400).json( { "error": true, "errorMessage": "Client does not exist." } );
             }
-            if ( rs_iInt !== tagRow[1] ) { return res.status(404).json( {"errorMessage": "Incorrect trand" } ) }
-
             
             console.log(`[${logTag}]: tag err: ${tagErr}, tag row ${JSON.stringify(tagRow)}`);
 
