@@ -192,21 +192,30 @@ def serverCallPOST(page, body):
 
 def readTag():
     global clf
-    target = clf.sense(RemoteTarget('106A'), RemoteTarget('106B'), RemoteTarget('212F'))
-    tag = nfc.tag.activate(clf, target)
-    records = tag.ndef.records[0].text
-    return json.loads(records)
+    try:
+        target = clf.sense(RemoteTarget('106A'), RemoteTarget('106B'), RemoteTarget('212F'))
+        tag = nfc.tag.activate(clf, target)
+        records = tag.ndef.records[0].text
+        return json.loads(records)
+    except AttributeError:
+        print("Unable to read tag. ")
+        close()
+        exit()
 
 
 def writeTag(tid, trand):
     global clf
-    target = clf.sense(RemoteTarget('106A'), RemoteTarget('106B'), RemoteTarget('212F'))
-    tag = nfc.tag.activate(clf, target)
+    try:
+        target = clf.sense(RemoteTarget('106A'), RemoteTarget('106B'), RemoteTarget('212F'))
+        tag = nfc.tag.activate(clf, target)
 
-    record = [ndef.TextRecord("{\"tid\":" + str(tid) + ", \"trand\":" + str(trand) + "}", "en")]
+        record = [ndef.TextRecord("{\"tid\":" + str(tid) + ", \"trand\":" + str(trand) + "}", "en")]
 
-    tag.ndef.records = record
-
+        tag.ndef.records = record
+    except AttributeError:
+        print("Unable to write tag. ")
+        close()
+        exit()
 
 def close():
     global clf
